@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  >
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta charset="UTF-8"/>
+        <title>welcome</title>
+        <div th:replace="/common/common_css :: base_css"></div>
+</head>
+<body>
+<!--页面头部-->
+<div th:replace="/common/common_body :: body_top"></div>
+<div id="wrapper">
+    <!--页面左侧菜单栏-->
+    <div th:replace="/common/common_body :: body_left"></div>
+
+    <div id="rightContent">
+           <h1>欢迎！！！！！！！！！</h1>
+    </div>
+
+</div>
+
+<!-- JS Scripts-->
+<div th:replace="/common/common_js :: base_js"></div>
+<!-- this page specific inline scripts -->
+<script>
+
+    $(document).ready(function () {
+    });
+</script>
+</body>
+</html>

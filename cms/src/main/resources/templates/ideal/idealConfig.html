@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  >
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta charset="UTF-8"/>
+        <title>ideal系统配置信息</title>
+        <div th:replace="/common/common_css :: base_css"></div>
+
+</head>
+<body>
+<!--页面头部-->
+<div th:replace="/common/common_body :: body_top"></div>
+
+<div id="wrapper">
+     <!--页面左侧菜单栏-->
+    <div th:replace="/common/common_body :: body_left"></div>
+
+
+    <div id="rightContent">
+    <div class="check-div form-inline" >
+        <form  id="formData"  action="query"   method="post" >
+        <div class="col-xs-16">
+            <label>环境：</label>
+            <select  id="milieuVal"  name="milieuVal"  class=" form-control" style="height:auto">
+                <option  th:selected="${milieuVal=='开发'}">开发</option>
+                <option  th:selected="${milieuVal=='ST'}">ST</option>
+                <option  th:selected="${milieuVal=='ST1'}">ST1</option>
+                <option  th:selected="${milieuVal=='ST2'}">ST2</option>
+                <option  th:selected="${milieuVal=='UAT'}">UAT</option>
+                <option  th:selected="${milieuVal=='UAT2'}">UAT2</option>
+                <option  th:selected="${milieuVal=='UAT3'}">UAT3</option>
+                <option  th:selected="${milieuVal=='全国模拟演练'}" >全国模拟演练</option>
+                <option  th:selected="${milieuVal=='SIM'}">SIM</option>
+                <option  th:selected="${milieuVal=='PRO'}">PRO</option>
+            </select>
+           <!-- <button class="btn btn-white btn-lg"  onclick="queryList()"  style="margin-left: 82%">查 询 </button>-->
+            <button class="btn btn-white btn-lg"  type="submit" style="margin-left: 81%">查 询 </button>
+            <button class="btn btn-white btn-lg"  type="button" onclick="ajaxQuery()" style="margin-left: -15%">局部刷新table按钮 </button>
+        </div>
+        </form>
+    </div>
+
+    <div id="page-wrapper" >
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Advanced Tables
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                    <tr>
+                                        <th>环境</th>
+                                        <th>功能</th>
+                                        <th>机器名</th>
+                                        <th>实在IP</th>
+                                        <th>内外网映射IP</th>
+                                        <th>虚IP</th>
+                                        <th>DEP组播子网IP</th>
+                                        <th>用户名/密码</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="gradeU" th:each="idealList : ${idealList}">
+                                        <td th:text="${idealList.milieuVal}"></td>
+                                        <td th:text="${idealList.function}"></td>
+                                        <td th:text="${idealList.machineName}"></td>
+                                        <td th:text="${idealList.realIp}"></td>
+                                        <td th:text="${idealList.mappingIp}"></td>
+                                        <td th:text="${idealList.virtualIp}"></td>
+                                        <td th:text="${idealList.depIp}"></td>
+                                        <td th:text="${idealList.userPass}"></td>
+                                        <td>
+                                            <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#changeSource">修改</button>
+                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSource">删除</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div id="example" style="text-align: center"> <ul id="pageLimit"></ul> </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!--修改资源弹出窗口-->
+        <div class="modal fade" id="changeSource" role="dialog" aria-labelledby="gridSystemModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="gridSystemModalLabel">修改资源</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <form class="form-horizontal">
+                                <div class="form-group ">
+                                    <label for="sName" class="col-xs-3 control-label">名称：</label>
+                                    <div class="col-xs-8 ">
+                                        <input type="email" class="form-control input-sm duiqi" id="sName" placeholder=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sLink" class="col-xs-3 control-label">链接：</label>
+                                    <div class="col-xs-8 ">
+                                        <input type="" class="form-control input-sm duiqi" id="sLink" placeholder=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sOrd" class="col-xs-3 control-label">排序：</label>
+                                    <div class="col-xs-8">
+                                        <input type="" class="form-control input-sm duiqi" id="sOrd" placeholder=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sKnot" class="col-xs-3 control-label">父节点：</label>
+                                    <div class="col-xs-8">
+                                        <input type="" class="form-control input-sm duiqi" id="sKnot" placeholder=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInput1" class="col-xs-3 control-label">资源类型：</label>
+                                    <div class="col-xs-8">
+                                        <label class="control-label" for="anniu">
+                                            <input type="radio" name="leixing" id="anniu"/>菜单</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="control-label" for="meun">
+                                            <input type="radio" name="leixing" id="meun"/> 按钮</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-xs btn-white" data-dismiss="modal">取 消</button>
+                        <button type="button" class="btn btn-xs btn-green">保 存</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <!--弹出删除资源警告窗口-->
+        <div class="modal fade" id="deleteSource" role="dialog" aria-labelledby="gridSystemModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            确定要删除该资源？删除后不可恢复！
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-xs btn-white" data-dismiss="modal">取 消</button>
+                        <button type="button" class="btn btn-xs btn-danger">保 存</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+
+
+
+    </div>
+</div>
+
+<!-- JS Scripts-->
+<div th:replace="/common/common_js :: base_js"></div>
+
+<script  th:inline="javascript">
+     $(document).ready(function () {
+             //菜单栏选中
+             $(".meun-item").removeClass("meun-item-active");
+             $("#ideal").addClass("meun-item-active");
+
+             //分页插件初始化
+             var element = $('#pageLimit');//对应下面ul的ID
+             var options = {
+                 currentPage: [[${currentPage}]],//当前的请求页面。
+                 totalPages: [[${totalPages}]],//一共多少页。
+                 size:"normal",//应该是页眉的大小。
+                 bootstrapMajorVersion: 3,//bootstrap的版本要求。
+                 alignment:"right",
+                 numberOfPages:10,//一页列出多少数据。
+                 onPageClicked: function (event, originalEvent, type, page) {
+                     var milieuVal=$("#milieuVal").val();
+                     $('#dataTables-example').load("ajaxQuery",{"milieuVal":milieuVal,"page":page});
+                 },
+                 itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+                     switch (type) {
+                         case "first": return "首页";
+                         case "prev": return "上一页";
+                         case "next": return "下一页";
+                         case "last": return "末页";
+                         case "page": return page;
+                     }
+                 }
+             }
+             element.bootstrapPaginator(options);
+     });
+
+
+     function ajaxQuery() {
+         //采用局部刷新table,不用更新整个页面，后台返回ModelAndView对象
+          var milieuVal=$("#milieuVal").val();
+         $('#dataTables-example').load("ajaxQuery",{"milieuVal":milieuVal,"page":1});
+
+     }
+</script>
+<div th:replace="/common/common_js :: bootstrapPaginator_js"></div>
+</body>
+</html>
