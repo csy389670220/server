@@ -14,13 +14,13 @@
   </resultMap>
 
   <select id="queryUserInfoById"  parameterType="string"  resultMap="ImageInfo">
-    select ID,USERNAME,CARDINFO,STATU,CREATTIME,UPDATETIME from IMGINFO t
+    select ID,USERNAME,IMGBASE,CARDINFO,STATU,CREATTIME,UPDATETIME from IMGINFO t
     where
     t.ID=#{userId,jdbcType=VARCHAR}
   </select>
 
   <select id="queryUserInfo"  parameterType="com.cfets.cms.model.UserInfo"  resultMap="ImageInfo">
-    select ID,USERNAME,CARDINFO,STATU,CREATTIME,UPDATETIME from IMGINFO t
+    select ID,USERNAME,IMGBASE,CARDINFO,STATU,CREATTIME,UPDATETIME from IMGINFO t
      where  1=1
     <if test="userName !=null and userName !='' ">
       and t.USERNAME=#{userName,jdbcType=VARCHAR}

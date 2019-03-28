@@ -43,6 +43,7 @@
                                     <tr>
                                         <th>用户名</th>
                                         <th>证件号</th>
+                                        <th>图片</th>
                                         <th>状态</th>
                                         <th>创建时间</th>
                                         <th>更新时间</th>
@@ -53,11 +54,14 @@
                                     <tr class="gradeU" th:each="userInfo : ${pageInfo.list}">
                                         <td th:text="${userInfo.userName}"></td>
                                         <td th:text="${userInfo.cardInfo}"></td>
+                                        <td style="width: 60px;">
+                                            <img  style="width:60px;height:86px" th:src="'data:image/png;base64,'+${userInfo.imgBase}"/>
+                                        </td>
                                         <td th:text="${userInfo.statu}"></td>
                                         <td th:text="${userInfo.creatTime}"></td>
                                         <td th:text="${userInfo.updateTime}"></td>
                                         <td>
-                                            <button shiro:hasPermission="userInfo_update" class="btn btn-success btn-xs" data-toggle="modal" data-target="#changeSource" th:onclick="'javascript:changeSourceQuery('+${userInfo.userId}+',\''+${userInfo.userName}+'\','+${userInfo.cardInfo}+','+${userInfo.statu}+')' ">修改</button>
+                                            <button shiro:hasPermission="userInfo_update" class="btn btn-success btn-xs" data-toggle="modal" data-target="#changeSource" th:onclick="'javascript:changeSourceQuery(\''+${userInfo.userId}+'\',\''+${userInfo.userName}+'\',\''+${userInfo.cardInfo}+'\',\''+${userInfo.statu}+'\')' ">修改</button>
                                             <button shiro:hasPermission="userInfo_del" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSource" th:onclick="'javascript:deleteValue('+${userInfo.userId}+')'" >删除</button>
                                         </td>
                                     </tr>
@@ -168,6 +172,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label for="cardInfo_update" class="col-xs-3 control-label">图片：</label>
+                                        <div class="col-xs-8 ">
+                                            <input type="file" title="Search for a file to add 1" class="btn-primary"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="statu_update" class="col-xs-3 control-label">状态：</label>
                                         <div class="col-xs-8">
                                             <input type="" class="form-control input-sm duiqi" id="statu_add" placeholder=""/>
@@ -222,7 +232,7 @@
                  size:"normal",//应该是页眉的大小。
                  bootstrapMajorVersion: 3,//bootstrap的版本要求。
                  alignment:"right",
-                 numberOfPages:10,//一页列出多少数据。
+                 numberOfPages:5,//一页列出多少数据。
                  onPageClicked: function (event, originalEvent, type, page) {
                      $("#pageNum").val(page);//将分页栏信息存储在隐藏域中
                      var userName=$("#user_name").val();
@@ -261,6 +271,9 @@
          //         alert("服务器或网络异常");
          //     }
          // });
+         if(cardInfo=="null"){
+             cardInfo="";
+         }
 
          $("#userId_update").val(userId);
          $("#userName_update").val(name);

@@ -9,16 +9,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * CMS系统登录类
  */
 @Controller
 @ResponseBody
-public class loginController {
+public class loginController  extends CmsSystemController{
+
+    //跳转到login页面
+    @RequestMapping(value = "/login")
+    public ModelAndView indexPage() {
+        ModelAndView modelAndView = new ModelAndView("login");
+        return modelAndView;
+    }
+
     //跳转到首页面
     @RequestMapping(value = "/index")
     public ModelAndView index() {
@@ -71,8 +85,6 @@ public class loginController {
             return modelAndView;
         }
     }
-
-
 
 }
 

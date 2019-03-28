@@ -4,7 +4,6 @@ import com.cfets.cms.model.UserInfo;
 import com.cfets.cms.service.UserInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,19 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
- * IDEAL系统环境配置控制类
+ * 用户人像信息维护类
  */
 @Controller
 @ResponseBody
 @RequestMapping("userInfo")
-public class UserInfoController implements Serializable {
+public class UserInfoController extends CmsSystemController {
     private static final Logger logger= LoggerFactory.getLogger(UserInfoController.class);
-    private int pageSize=10;//分页查询，页面条目数量
 
     @Autowired
     UserInfoService userInfoService;
@@ -114,6 +111,11 @@ public class UserInfoController implements Serializable {
         return map;
     }
 
+    /**
+     * 新增用户资源
+     * @param userInfo
+     * @return
+     */
     @RequestMapping(value = "/addUserInfo")
     public Map<String, Object> addUserInfo(UserInfo userInfo){
         logger.info("addUserInfo:{}",userInfo.toString());

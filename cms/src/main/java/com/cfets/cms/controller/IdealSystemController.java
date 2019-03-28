@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 @ResponseBody
 @RequestMapping("ideal")
-public class IdealSystemController {
+public class IdealSystemController extends CmsSystemController{
     private static final Logger logger= LoggerFactory.getLogger(IdealSystemController.class);
 
 
