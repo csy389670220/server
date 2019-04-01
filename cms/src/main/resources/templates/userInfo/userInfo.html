@@ -6,6 +6,7 @@
         <meta charset="UTF-8"/>
         <title>用户信息查询</title>
         <div th:replace="/common/common_css :: base_css"></div>
+        <div th:replace="/common/common_css :: bootstrapFileinput_css"></div>
 
 </head>
 <body>
@@ -88,23 +89,30 @@
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" id="form_update">
                                 <div class="form-group ">
                                     <label for="userName_update" class="col-xs-3 control-label">用户名：</label>
                                     <div class="col-xs-8 ">
-                                        <input  class="form-control input-sm duiqi" id="userName_update" placeholder=""/>
+                                        <input  type="hidden" id="userId_update"  name="userId"/>
+                                        <input  class="form-control input-sm duiqi" id="userName_update" name="userName" placeholder=""/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="cardInfo_update" class="col-xs-3 control-label">证件号：</label>
                                     <div class="col-xs-8 ">
-                                        <input type="" class="form-control input-sm duiqi" id="cardInfo_update" placeholder=""/>
+                                        <input type="" class="form-control input-sm duiqi" id="cardInfo_update" name="cardInfo" placeholder=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  for="image_update" class="col-xs-3 control-label">图片：</label>
+                                    <div class="col-xs-8 " style="margin-left:-25px;width:400px;margin-top:5px;">
+                                        <input id="image_update"  name="image_update" type="file" multiple="multiple"  class="file-loading" accept="image/*"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="statu_update" class="col-xs-3 control-label">状态：</label>
                                     <div class="col-xs-8">
-                                        <input type="" class="form-control input-sm duiqi" id="statu_update" placeholder=""/>
+                                        <input type="" class="form-control input-sm duiqi" id="statu_update"  name="statu" placeholder=""/>
                                     </div>
                                 </div>
 
@@ -158,29 +166,29 @@
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal"  id="form_add">
                                     <div class="form-group ">
-                                        <label for="userName_update" class="col-xs-3 control-label">用户名：</label>
+                                        <label for="userName_add" class="col-xs-3 control-label">用户名：</label>
                                         <div class="col-xs-8 ">
-                                            <input  class="form-control input-sm duiqi" id="userName_add" placeholder=""/>
+                                            <input  class="form-control input-sm duiqi" id="userName_add" name="userName" placeholder=""/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="cardInfo_update" class="col-xs-3 control-label">证件号：</label>
+                                        <label for="cardInfo_add" class="col-xs-3 control-label">证件号：</label>
                                         <div class="col-xs-8 ">
-                                            <input type="" class="form-control input-sm duiqi" id="cardInfo_add" placeholder=""/>
+                                            <input type="" class="form-control input-sm duiqi" id="cardInfo_add" name="cardInfo" placeholder=""/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="cardInfo_update" class="col-xs-3 control-label">图片：</label>
-                                        <div class="col-xs-8 ">
-                                            <input type="file" title="Search for a file to add 1" class="btn-primary"/>
+                                        <label  for="image_add" class="col-xs-3 control-label">图片：</label>
+                                        <div class="col-xs-8 " style="margin-left:-25px;width:400px;margin-top:5px;">
+                                            <input id="image_add"  name="image_add" type="file" multiple="multiple"  class="file-loading" accept="image/*"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="statu_update" class="col-xs-3 control-label">状态：</label>
+                                        <label for="statu_add" class="col-xs-3 control-label">状态：</label>
                                         <div class="col-xs-8">
-                                            <input type="" class="form-control input-sm duiqi" id="statu_add" placeholder=""/>
+                                            <input type="" class="form-control input-sm duiqi" id="statu_add" name="statu" placeholder=""/>
                                         </div>
                                     </div>
 
@@ -200,9 +208,6 @@
 
        <!-- 隐藏域-->
        <div>
-            <!-- update弹出框用户的ID-->
-            <input  type="hidden" id="userId_update"/>
-
             <!--当前分页栏的页码-->
             <input type="hidden"  id="pageNum" th:value="${pageNum}"/>
 
@@ -217,38 +222,18 @@
 
 <!-- JS Scripts-->
 <div th:replace="/common/common_js :: base_js"></div>
-
 <script  th:inline="javascript">
      $(document).ready(function () {
              //菜单栏选中
              $(".meun-item").removeClass("meun-item-active");
              $("#userInfo").addClass("meun-item-active");
 
-             //分页插件初始化
-             var element = $('#pageLimit');//对应下面ul的ID
-             var options = {
-                 currentPage: [[${pageInfo.pageNum}]],//当前的请求页面。
-                 totalPages: [[${pageInfo.pages}]],//一共多少页。
-                 size:"normal",//应该是页眉的大小。
-                 bootstrapMajorVersion: 3,//bootstrap的版本要求。
-                 alignment:"right",
-                 numberOfPages:5,//一页列出多少数据。
-                 onPageClicked: function (event, originalEvent, type, page) {
-                     $("#pageNum").val(page);//将分页栏信息存储在隐藏域中
-                     var userName=$("#user_name").val();
-                     $('#dataTables-example').load("queryList",{"userName":userName,"page":page});
-                 },
-                 itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-                     switch (type) {
-                         case "first": return "首页";
-                         case "prev": return "上一页";
-                         case "next": return "下一页";
-                         case "last": return "末页";
-                         case "page": return page;
-                     }
-                 }
-             }
-             element.bootstrapPaginator(options);
+             //分页栏初始化
+             initPageinator("pageLimit",[[${pageInfo.pageNum}]],[[${pageInfo.pages}]]);
+
+             //bootstrap fileInput初始化
+             initFileInput("image_update");
+             initFileInput("image_add");
      });
 
      //update弹出框数据展示
@@ -284,17 +269,15 @@
 
      //保存update弹出框数据
      function changeSourceUpdate() {
+         var formData = new FormData($("#form_update")[0]);
          $.ajax({
-             type: "post",
-             async: true,
-             url: "updateById",
-             data: {
-                 userId:  $("#userId_update").val(),
-                 cardInfo: $("#cardInfo_update").val(),
-                 statu:  $("#statu_update").val()
-             },
-             dataType: "json",
-             success: function (result) {
+             type : 'post',
+             url : 'updateById',
+             dataType : 'json',
+             data : formData,
+             contentType: false,
+             processData: false,
+             success : function(result){
                  if(result.code=="success"){
                      alert(result.msg);
                      var page=Number($("#pageNum").val());
@@ -303,9 +286,7 @@
                  }else{
                      alert(result.msg);
                  }
-
-             },
-             error: function (errorMsg) {
+             }, error: function (errorMsg) {
                  alert("服务器或网络异常");
              }
          });
@@ -346,33 +327,33 @@
 
      //新增用户资源
      function sourceAdd() {
+         var formData = new FormData($("#form_add")[0]);
          $.ajax({
-             type: "post",
-             async: true,
-             url: "addUserInfo",
-             data: {
-                 userName:  $("#userName_add").val(),
-                 cardInfo: $("#cardInfo_add").val(),
-                 statu:  $("#statu_add").val()
-             },
-             dataType: "json",
-             success: function (result) {
+             type : 'post',
+             url : 'addUserInfo',
+             dataType : 'json',
+             data : formData,
+             contentType: false,
+             processData: false,
+             success : function(result){
                  if(result.code=="success"){
                      alert(result.msg);
-                     //新增成功，局部刷新列表，直接跳至第一页
+                     var page=Number($("#pageNum").val());
+                     //更新成功，局部刷新列表
                      $('#dataTables-example').load("queryList",{"userName":$("#user_name").val(),"page":1});
                  }else{
                      alert(result.msg);
                  }
-
-             },
-             error: function (errorMsg) {
+             }, error: function (errorMsg) {
                  alert("服务器或网络异常");
              }
          });
      }
 
+
+
 </script>
 <div th:replace="/common/common_js :: bootstrapPaginator_js"></div>
+<div th:replace="/common/common_js :: bootstrapFileinput_js"></div>
 </body>
 </html>

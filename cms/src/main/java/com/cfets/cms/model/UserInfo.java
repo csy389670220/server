@@ -1,5 +1,7 @@
 package com.cfets.cms.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class UserInfo {
     private String userId;//主键
     private String userName;//用户名

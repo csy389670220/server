@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class UserInfoController extends CmsSystemController {
     @RequiresPermissions(value={"userInfo_query"})
     public ModelAndView query(UserInfo userInfo){
         ModelAndView modelAndView = new ModelAndView("userInfo/userInfo");
-        logger.info(userInfo.toString());
+        logger.info("userInfo_query:{}",userInfo.toString());
 
         //首次初始化查询，pageNum固定为1
         PageInfo<UserInfo> pageInfo =userInfoService.queryListInfo(userInfo,1,pageSize);
@@ -63,7 +64,7 @@ public class UserInfoController extends CmsSystemController {
     @RequestMapping(value = "/queryList")
     public ModelAndView queryList(@RequestParam("userName") String userName,@RequestParam("page") int page){
         ModelAndView modelAndView = new ModelAndView("userInfo/userInfoTable");
-        logger.info("queryList userName:{},page:{}",userName,page);
+        logger.info("userInfo_queryList userName:{},page:{}",userName,page);
         PageHelper.startPage(page,pageSize);
         List<UserInfo> list =userInfoService.queryUserInfo(
                 new UserInfo("",userName,"","","","",""));
@@ -79,7 +80,7 @@ public class UserInfoController extends CmsSystemController {
      */
     @RequestMapping(value = "/queryUserInfoById")
     public UserInfo queryUserInfoById(@RequestParam("userId") String userId){
-        logger.info("queryUserInfoById  userId:{}",userId);
+        logger.info("userInfo_queryUserInfoById  userId:{}",userId);
         UserInfo info=userInfoService.queryUserInfoById(userId);
 
         return info;
@@ -92,11 +93,10 @@ public class UserInfoController extends CmsSystemController {
      * @return
      */
     @RequestMapping(value = "/updateById")
-    public Map<String, Object> updateById(UserInfo userInfo){
-        logger.info("updateById:{}",userInfo.toString());
-        Map<String, Object> map=userInfoService.updateById(userInfo);
-
-        return map;
+    public Map<String, Object> updateById(UserInfo userInfo, @RequestParam("image_update") MultipartFile myfile) {
+         logger.info("userInfo_updateById  userInfo:{},MultipartFileName:{}",userInfo.toString(),myfile.getOriginalFilename());
+         Map<String, Object> map=userInfoService.updateById(userInfo,myfile);
+         return map;
     }
 
     /**
@@ -106,7 +106,7 @@ public class UserInfoController extends CmsSystemController {
      */
     @RequestMapping(value = "/deleteById")
     public Map<String, Object> deleteById(@RequestParam("userId") String userId){
-        logger.info("deleteById  userId:{}",userId);
+        logger.info("userInfo_deleteById  userId:{}",userId);
         Map<String, Object> map=userInfoService.deleteById(userId);
         return map;
     }
@@ -117,9 +117,9 @@ public class UserInfoController extends CmsSystemController {
      * @return
      */
     @RequestMapping(value = "/addUserInfo")
-    public Map<String, Object> addUserInfo(UserInfo userInfo){
-        logger.info("addUserInfo:{}",userInfo.toString());
-        Map<String, Object> map=userInfoService.addUserInfo(userInfo);
+    public Map<String, Object> addUserInfo(UserInfo userInfo,@RequestParam("image_add") MultipartFile myfile){
+        logger.info("userInfo_addUserInfo  userInfo:{},MultipartFileName:{}",userInfo.toString(),myfile.getOriginalFilename());
+        Map<String, Object> map=userInfoService.addUserInfo(userInfo,myfile);
         return map;
     }
 

@@ -45,6 +45,9 @@
       <if test="statu != null and statu !=''">
         STATU = #{statu,jdbcType=VARCHAR},
       </if>
+      <if test="imgBase != null and imgBase !=''">
+        IMGBASE = #{imgBase,jdbcType=VARCHAR},
+      </if>
       UPDATETIME=sysdate
     </set>
     where ID = #{userId,jdbcType=VARCHAR}
