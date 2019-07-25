@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Encoder;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -96,51 +93,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoMapper.addUserInfo(userInfo);
             logger.info("用户信息新增成功");
             map= ResultMapUtil.success("用户信息新增成功");
-        }catch (Exception e){
-            logger.error("新增用户信息系统错误");
-            e.printStackTrace();
-            map= ResultMapUtil.fail("新增用户信息系统错误");
-        }
-        return map;
-    }
-
-    @Override
-    public Map<String, Object> updateById(UserInfo userInfo, MultipartFile myfile) {
-        BASE64Encoder base64Encoder =new BASE64Encoder();
-        Map<String, Object> map;
-        try {
-            String base64EncoderImg =base64Encoder.encode(myfile.getBytes());
-            userInfo.setImgBase(base64EncoderImg);
-            userInfoMapper.updateById(userInfo);
-            logger.info("用户信息更新成功");
-            map= ResultMapUtil.success("用户信息更新成功");
-        }catch (IOException e) {
-            logger.error("更新用户信息MultipartFile转换错误");
-            e.printStackTrace();
-            map= ResultMapUtil.fail("更新用户信息MultipartFile转换错误");
-        }catch (Exception e){
-            logger.error("更新用户信息系统错误");
-            e.printStackTrace();
-            map= ResultMapUtil.fail("更新用户信息系统错误");
-        }
-
-        return map;
-    }
-
-    @Override
-    public Map<String, Object> addUserInfo(UserInfo userInfo, MultipartFile myfile) {
-        BASE64Encoder base64Encoder =new BASE64Encoder();
-        Map<String, Object> map;
-        try {
-            String base64EncoderImg =base64Encoder.encode(myfile.getBytes());
-            userInfo.setImgBase(base64EncoderImg);
-            userInfoMapper.addUserInfo(userInfo);
-            logger.info("用户信息新增成功");
-            map= ResultMapUtil.success("用户信息新增成功");
-        }catch (IOException e) {
-            logger.error("新增用户信息MultipartFile转换错误");
-            e.printStackTrace();
-            map= ResultMapUtil.fail("新增用户信息MultipartFile转换错误");
         }catch (Exception e){
             logger.error("新增用户信息系统错误");
             e.printStackTrace();

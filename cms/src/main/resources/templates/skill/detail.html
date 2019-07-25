@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>商品秒杀详情</title>
+
+</head>
+<body>
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panner-heading text-center">
+            <h1><p th:text="${itemSeckillVo.name}"></p></h1>
+        </div>
+        <div class="panel-body text-center">
+            <div>
+                <h4><span th:text="'库存:'+${itemSeckillVo.stock}"></span></h4>
+                <h4><span th:text="'原价:'+${itemSeckillVo.price}"></span></h4>
+                <h4><span style="color: red" th:text="'秒杀价:'+${itemSeckillVo.seckillPrice}"></span></h4>
+            </div>
+            <h2 class="text-danger btn-lg">
+                <!-- 显示time图标 -->
+                <span class="glyphicon glyphicon-time"></span>
+                <!-- 展示活动开始倒计时 -->
+                <span class="glyphicon" id="seckill-box"></span>
+                <!-- 展示活动结束倒计时 -->
+                <br/>
+                <span class="glyphicon" id="seckill-box-end"></span>
+            </h2>
+        </div>
+        <div class="panel-footer"></div>
+    </div>
+</div>
+<div>
+    <input type="hidden" id="seckillId" th:value="${itemSeckillVo.seckillId}"/>
+    <input type="hidden" id="startTime" th:value="${itemSeckillVo.startTime.time}"/>
+    <input type="hidden" id="endTime" th:value="${itemSeckillVo.endTime.time}"/>
+    <input type="hidden" id="itemId" th:value="${itemSeckillVo.id}"/>
+    <input type="hidden" id="stock" th:value="${itemSeckillVo.stock}"/>
+    <input type="hidden" id="participate" th:value="${itemSeckillVo.participate}"/>
+</div>
+
+
+<!-- JS Scripts-->
+<div th:replace="/common/common_js :: bootstrapPaginator_js"></div>
+<!-- jquery.countdown 倒计时插件 -->
+<script type="text/javascript" th:src="@{/thirdparty/system/js/jquery.countdown.js}"></script>
+<script th:inline="javascript">
+    var seckillBox = $('#seckill-box');
+    var seckillBoxEnd = $('#seckill-box-end');
+    var startTime = $("#startTime").val();
+    var endTime = $("#endTime").val();
+    var seckillId = $("#seckillId").val();
+    var itemId = $("#itemId").val();
+    var stock = $("#stock").val();
+    var userId = $("#sysId").val();
+    var participate = $("#participate").val();//是否参加过秒杀
+    $(document).ready(function () {
+        if (participate === 'true') {
+            seckillBox.html('您已经参加过秒杀啦，不能贪心哟');
+        } else {
+            seckillInit(seckillId, startTime, endTime);
+        }
+    });
+
+    //获取系统当前时间,并处理秒杀模块按钮逻辑
+    function seckillInit(seckillId, startTime, endTime) {
+        var url = cmsSystem.seckill.url.getNowTimeUrl();
+        $.ajax({
+            url: url,
+            type: "get",    //不区分大小写
+            success: function (time) {
+                var nowTime = time;
+                if (0 >= stock) {//库存售罄
+                    seckillBox.html('库存售罄!');
+                    return;
+                }
+                if (nowTime > endTime) {
+                    //秒杀结束
+                    seckillBox.html('秒杀结束!');
+                } else if (startTime > nowTime) {
+                     //秒杀未开始
+                     seckillStartCountdown(startTime);
+                } else {
+                    //秒杀进行中
+                    seckillEndCountdown(endTime);
+                    handleSeckill(seckillId, seckillBox);
+                }
+            },
+            error: function (err) {
+                alert("查询系统时间失败");
+            }
+        });
+    }
+
+    //获取秒杀md5地址,判断是否显示秒杀按钮
+    function handleSeckill(seckillId, node) {
+        node.hide().html('<button class="btn btn-primary btn-lg" id="killBtn">开始秒杀</button>');  //按钮
+        $.ajax({
+            url: cmsSystem.seckill.url.exposerUrl(seckillId),
+            type: "get",    //不区分大小写
+            success: function (exposerUrl) {
+                if (exposerUrl) {
+                    //拿到秒杀地址
+                    execution(exposerUrl, node);
+
+                } else {
+                    //因前端页面出现问题导致提前去获取秒杀地址失败，不做任何处理
+                    //需要用户自己刷新页面重新获取倒计时，否则会不停的请求秒杀地址，在家服务器压力
+                    //seckillInit(seckillId, startTime, endTime)
+                    node.html('<span class="label label-success" id="pageBack">点击请重新刷新页面</span>').show(300);
+                    $("#pageBack").one('click', function () {
+                        var url = cmsSystem.seckill.url.detailUrl(userId, seckillId)
+                        cmsSystem.page.getPage(url, "秒杀详情页打开错误");
+                    });
+                }
+            },
+            error: function (xhr) {
+                alert("获取秒杀地址系统错误");
+            }
+        });
+
+    }
+
+    //显示秒杀按钮，实现秒杀逻辑
+    function execution(exposerUrl, node) {
+        var killUrl = cmsSystem.seckill.url.executionUrl(exposerUrl);
+        console.log("killUrl:" + killUrl)
+        //绑定秒杀按钮点击事件（一次性）
+        $("#killBtn").one('click', function () {
+            //执行秒杀请求
+            //1.先禁用按钮
+            $(this).addClass('disabled');
+            //2.发送秒杀请求执行秒杀
+            $.ajax({
+                url: killUrl,
+                type: "post",    //不区分大小写
+                data: {"itemId": itemId, "seckillId": seckillId, "userId": userId},
+                success: function (result) {
+                    //3:显示秒杀结果
+                    node.html('<span class="label label-success">' + result.data + '</span>')
+                    seckillBoxEnd.hide();
+                },
+                error: function (xhr) {
+                    alert("秒杀下单系统错误");
+                }
+            });
+        });
+        node.show();
+    }
+
+    //秒杀活动结束倒计时
+    function seckillEndCountdown(time) {
+        var coutnTime = new Date(Number(time) - 100);
+        seckillBoxEnd.countdown(coutnTime, function (event) {
+            //时间格式
+            var format = event.strftime('活动还剩: %D天 %H时 %M分 %S秒结束');
+            seckillBoxEnd.html(format);
+        }).on('finish.countdown', function () { //时间完成回调函数
+            seckillBox.hide().html('秒杀结束!').show(300);
+            seckillBoxEnd.hide();
+
+        });
+    }
+    //秒杀活动开始倒计时
+    function seckillStartCountdown(time) {
+        var coutnTime = new Date(Number(time) + 1000);
+        seckillBox.countdown(coutnTime, function (event) {
+            //时间格式
+            var format = event.strftime('秒杀倒计时: %D天 %H时 %M分 %S秒');
+            seckillBox.html(format);
+        }).on('finish.countdown', function () { //时间完成回调函数
+            seckillEndCountdown(endTime);// 活动结束倒计时
+            //获取秒杀地址，控制秒杀逻辑，执行秒杀
+            handleSeckill(seckillId, seckillBox);
+        });
+    }
+
+</script>
+
+</body>
+</html>

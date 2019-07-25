@@ -120,21 +120,21 @@ public class AESUtil {
     }
 
 
-    public static void main(String[] args) {
-        /**
-         * 第一种
-         */
-        String content = "iisuser";
-        String password = "iisuser_db_key";//解密私钥
-        //加密
-        System.out.println("加密前：" + content);
-        byte[] encryptResult = AESUtil.encrypt(content, password);
-        String encryptResultStr = AESUtil.parseByte2HexStr(encryptResult);
-        System.out.println("加密后：" + encryptResultStr);
-        //解密
-        byte[] decryptFrom = AESUtil.parseHexStr2Byte(encryptResultStr);
-        byte[] decryptResult = AESUtil.decrypt(decryptFrom, password);
-        System.out.println("解密后：" + new String(decryptResult));
-
-    }
+//    public static void main(String[] args) {
+//        /**
+//         * 第一种
+//         */
+//        String content = "iisuser";
+//        String password = "iisuser_db_key";//解密私钥
+//        //加密
+//        System.out.println("加密前：" + content);
+//        byte[] encryptResult = AESUtil.encrypt(content, password);
+//        String encryptResultStr = AESUtil.parseByte2HexStr(encryptResult);
+//        System.out.println("加密后：" + encryptResultStr);
+//        //解密
+//        byte[] decryptFrom = AESUtil.parseHexStr2Byte(encryptResultStr);
+//        byte[] decryptResult = AESUtil.decrypt(decryptFrom, password);
+//        System.out.println("解密后：" + new String(decryptResult));
+//
+//    }
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>证件号</th>
+                    <th>图片</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr class="gradeU" th:each="userInfo : ${pageInfo}">
+                <td th:text="${userInfo.userName}"></td>
+                <td th:text="${userInfo.cardInfo}"></td>
+                <td style="width: 60px;">
+                    <img  style="width:60px;height:86px" th:src="'data:image/png;base64,'+${userInfo.imgBase}"/>
+                </td>
+                <td th:text="${userInfo.statu}"></td>
+                <td th:text="${userInfo.creatTime}"></td>
+                <td th:text="${userInfo.updateTime}"></td>
+                <td>
+                    <button shiro:hasPermission="userInfo_update" class="btn btn-success btn-xs" data-toggle="modal" data-target="#changeSource" th:onclick="'javascript:changeSourceQuery(\''+${userInfo.userId}+'\',\''+${userInfo.userName}+'\',\''+${userInfo.cardInfo}+'\',\''+${userInfo.statu}+'\')' ">修改</button>
+                    <button shiro:hasPermission="userInfo_del" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSource" th:onclick="'javascript:deleteValue('+${userInfo.userId}+')'" >删除</button>
+                </td>
+            </tr>
+            </tbody>
+
+</html>

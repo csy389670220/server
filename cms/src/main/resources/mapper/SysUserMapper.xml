@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cfets.cms.mapper.SysUserMapper">
+    <resultMap id="BaseResultMap" type="com.cfets.cms.model.SysUser">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="USER_STATUS" property="userStatus" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_USER" property="createUser" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_USER" property="updateUser" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, USER_NAME, LOGIN_NAME, PASSWORD, EMAIL, PHONE, USER_STATUS, CREATE_TIME, CREATE_USER, 
+    UPDATE_TIME, UPDATE_USER
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_user
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.cfets.cms.model.SysUser">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_user (USER_NAME, LOGIN_NAME, PASSWORD,
+        EMAIL, PHONE, USER_STATUS,
+        CREATE_TIME, CREATE_USER, UPDATE_TIME,
+        UPDATE_USER)
+        values (#{userName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{userStatus,jdbcType=VARCHAR},
+        #{createTime,jdbcType=DATE}, #{createUser,jdbcType=INTEGER}, #{updateTime,jdbcType=DATE},
+        #{updateUser,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cfets.cms.model.SysUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                USER_NAME,
+            </if>
+            <if test="loginName != null">
+                LOGIN_NAME,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+            <if test="email != null">
+                EMAIL,
+            </if>
+            <if test="phone != null">
+                PHONE,
+            </if>
+            <if test="userStatus != null">
+                USER_STATUS,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createUser != null">
+                CREATE_USER,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="loginName != null">
+                #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="userStatus != null">
+                #{userStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cfets.cms.model.SysUser">
+        update t_sys_user
+        <set>
+            <if test="userName != null">
+                USER_NAME = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="loginName != null">
+                LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                PHONE = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="userStatus != null">
+                USER_STATUS = #{userStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                CREATE_USER = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                UPDATE_USER = #{updateUser,jdbcType=INTEGER},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cfets.cms.model.SysUser">
+    update t_sys_user
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      USER_STATUS = #{userStatus,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_USER = #{createUser,jdbcType=INTEGER},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_USER = #{updateUser,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByLoginName" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        where LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectSysUsers" resultMap="BaseResultMap" parameterType="com.cfets.cms.model.vo.SysUserVo">
+        select
+        ID, USER_NAME, LOGIN_NAME, EMAIL, PHONE, USER_STATUS, CREATE_TIME, CREATE_USER,
+        UPDATE_TIME, UPDATE_USER
+        from t_sys_user
+        <where>
+            <if test="userName != null">
+                and USER_NAME like CONCAT('%',CONCAT(#{userName},'%'))
+            </if>
+            <if test="loginName != null">
+                and LOGIN_NAME like CONCAT('%',CONCAT(#{loginName},'%'))
+            </if>
+            <if test="userStatus != null">
+                and USER_STATUS= #{userStatus,jdbcType=VARCHAR}
+            </if>
+
+        </where>
+        order by CREATE_TIME desc
+    </select>
+
+    <select id="getTotal" parameterType="com.cfets.cms.model.vo.SysUserVo" resultType="int">
+        select count(*) from t_sys_user
+        <where>
+            <if test="userName != null">
+                and USER_NAME like CONCAT('%',CONCAT(#{userName},'%'))
+            </if>
+            <if test="loginName != null">
+                and LOGIN_NAME like CONCAT('%',CONCAT(#{loginName},'%'))
+            </if>
+            <if test="userStatus != null">
+                and USER_STATUS= #{userStatus,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectAllPermission" parameterType="string" resultType="com.cfets.cms.model.Permission">
+            SELECT
+               	tp.PER_CODE  perCode,tp.PER_DESC perDesc,tp.PER_LEV perLev,tp.PARENT_ID parentId
+            FROM
+                (
+                    SELECT
+                        rp.PER_ID
+                    FROM
+                        (
+                            SELECT
+                                ur.ROLE_ID
+                            FROM
+                                t_sys_user u
+                            LEFT JOIN t_user_role ur ON u.ID = ur.USER_ID
+                            WHERE
+                                u.LOGIN_NAME =  #{loginName,jdbcType=VARCHAR}
+                        ) r
+                    LEFT JOIN t_role_per rp ON r.ROLE_ID = rp.ROLE_ID
+                    WHERE
+                        rp.ROLE_ID = r.ROLE_ID
+                ) p
+            LEFT JOIN t_permission tp ON p.PER_ID = tp.ID
+  </select>
+</mapper>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>商品秒杀</title>
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="panner-heading text-center">
+            <h1>优惠进行中。。。</h1>
+        </div>
+        <div class="panel-body text-center">
+            <div class="col-xs-6 col-sm-3" th:each="list : ${list}"
+                  style="box-shadow: inset 1px -1px 1px #b1979736, inset -1px 1px 1px #b1979736;margin: 20px 20px 20px 20px;">
+                <h4><p th:text="${list.name}"></p></h4>
+                <img th:src="${list.imgUrl}" style="width: 242px;height: 162px"/>
+                <p th:text="'原价：'+${list.price}"></p>
+                <p th:text="'秒杀价：'+${list.seckillPrice}"></p>
+                <button class="btn btn-warning" style="margin-bottom:20px"
+                        th:onclick="'javascript:goDetail('+${list.seckillId}+')'">去抢购
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- JS Scripts-->
+<div th:replace="/common/common_js :: bootstrapPaginator_js"></div>
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+    });
+
+    // 跳转详情页
+    function goDetail(seckillId) {
+        var userId=$("#sysId").val();
+        var url=cmsSystem.seckill.url.detailUrl(userId,seckillId)
+        cmsSystem.page.getPage(url,"秒杀详情页打开错误");
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cfets.cms.mapper.SuccessSkillMapper">
+    <resultMap id="BaseResultMap" type="com.cfets.cms.model.SuccessSkill">
+        <id column="skill_id" property="skillId" jdbcType="INTEGER"/>
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    skill_id, user_id, status, create_time
+  </sql>
+
+    <insert id="insert" parameterType="com.cfets.cms.model.SuccessSkill">
+    insert into t_success_skill (skill_id, user_id, status, 
+      create_time)
+    values (#{skillId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.cfets.cms.model.SuccessSkill">
+        insert into t_success_skill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="skillId != null">
+                skill_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="skillId != null">
+                #{skillId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cfets.cms.model.SuccessSkill">
+        update t_success_skill
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where skill_id = #{skillId,jdbcType=INTEGER}
+        and user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cfets.cms.model.SuccessSkill">
+    update t_success_skill
+    set status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where skill_id = #{skillId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectNumByUserId" parameterType="com.cfets.cms.model.SuccessSkill" resultType="int">
+    select count(*) from t_success_skill
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+    and skill_id = #{skillId,jdbcType=INTEGER}
+  </select>
+</mapper>

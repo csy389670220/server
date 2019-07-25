@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>index页面</title>
+    <div th:replace="/common/common_css :: base_css"></div>
+    <!-- JS Scripts-->
+    <div th:replace="/common/common_js :: base_js"></div>
+
+</head>
+<body>
+<!--界面顶部显示区域-->
+<div th:fragment="body_top" id="top" style="background:#FFFFFF">
+    <div id="brand">
+        <img th:src="@{/thirdparty/system/images/logo4.png}" alt="logo"/>
+    </div>
+    <div id="banner" style="background:#0075c0;height:15px">
+        <div id="banner_menu">
+            <span>&nbsp;</span>
+        </div>
+    </div>
+</div>
+
+
+<div id="wrapper">
+    <!--页面左侧菜单栏-->
+    <!-- 左侧菜单栏目块 -->
+    <div th:fragment="body_left" class="leftMeun" id="leftMeun">
+        <div id="personInfor">
+            <p id="userName" th:text="${userName}"></p>
+            <!--当前登录员工系统ID-->
+            <input type="hidden" id="sysId" th:value="${sysId}"/>
+            <p>
+                <a href="/CMS/logout">退出登录</a>
+            </p>
+        </div>
+        <div class="meun-title">主菜单</div>
+        <div class="meun-item meun-item-active" onclick="selectTab('welcome')" role="tab" data-toggle="tab">
+            <img th:src="@{/thirdparty/system/images/icon_house_grey.png}"/>首页
+        </div>
+        <div shiro:hasPermission="sys_user_query" class="meun-item " onclick="selectTab('sysUser/query')" role="tab" data-toggle="tab">
+            <img th:src="@{/thirdparty/system/images/icon_card_grey.png}"/>用户管理
+        </div>
+        <div shiro:hasPermission="role_per_query" class="meun-item " onclick="selectTab('userPer/query')" role="tab" data-toggle="tab"><img
+                th:src="@{/thirdparty/system/images/icon_chara_grey.png}"/>角色管理
+        </div>
+        <div shiro:hasPermission="skill_query" class="meun-item " onclick="selectTab('seckill/query')" role="tab" data-toggle="tab"><img
+                th:src="@{/thirdparty/system/images/icon_char_grey.png}"/>秒杀活动
+        </div>
+        <div class="meun-item " onclick="selectTab('blackplans/query')" role="tab" data-toggle="tab"><img
+                th:src="@{/thirdparty/system/images/icon_house_grey.png}"/>黑板计划
+        </div>
+    </div>
+    <div id="rightContent">
+    </div>
+
+</div>
+<script th:inline="javascript">
+
+    $(function() {
+        $(".meun-item").click(function() {
+            $(".meun-item").removeClass("meun-item-active");
+            $(this).addClass("meun-item-active");
+            var itmeObj = $(".meun-item").find("img");
+            itmeObj.each(function() {
+                var items = $(this).attr("src");
+                items = items.replace("_grey.png", ".png");
+                items = items.replace(".png", "_grey.png")
+                $(this).attr("src", items);
+            });
+            var attrObj = $(this).find("img").attr("src");
+            ;
+            attrObj = attrObj.replace("_grey.png", ".png");
+            $(this).find("img").attr("src", attrObj);
+        });
+        $("#topAD").click(function() {
+            $("#topA").toggleClass(" glyphicon-triangle-right");
+            $("#topA").toggleClass(" glyphicon-triangle-bottom");
+        });
+        $("#topBD").click(function() {
+            $("#topB").toggleClass(" glyphicon-triangle-right");
+            $("#topB").toggleClass(" glyphicon-triangle-bottom");
+        });
+        $("#topCD").click(function() {
+            $("#topC").toggleClass(" glyphicon-triangle-right");
+            $("#topC").toggleClass(" glyphicon-triangle-bottom");
+        });
+        $(".toggle-btn").click(function() {
+            $("#leftMeun").toggleClass("show");
+            $("#rightContent").toggleClass("pd0px");
+        })
+
+        $('#rightContent').load("welcome");//初始化页面默认打开首页
+
+    })
+    // 切换菜单tab
+    function selectTab(url) {
+        //$('#rightContent').load(url);
+        $.ajax({
+            url: url,
+            type: "post",    //不区分大小写
+            data: {"pageNum": 1},//初始化业务页面，列表查询显示第一页
+            datatype: 'json',
+            success: function (view) {
+                $('#rightContent').empty();
+                $('#rightContent').append(view);
+            },
+            error: function (xhr) {
+                alert("页面初始化失败");
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

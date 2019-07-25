@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <!--界面顶部显示区域-->
-<div  th:fragment="body_top" id="top" style="background:#FFFFFF">
+<div th:fragment="body_top" id="top" style="background:#FFFFFF">
     <div id="brand">
-        <img th:src="@{/thirdparty/system/images/logo4.png}"  alt="logo" />
+        <img th:src="@{/thirdparty/system/images/logo4.png}" alt="logo"/>
     </div>
     <div id="banner" style="background:#bbbfd2;height:10px">
         <div id="banner_menu">
@@ -14,9 +14,8 @@
 </div>
 
 
-
 <!-- 左侧菜单栏目块 -->
-<div  th:fragment="body_left" class="leftMeun" id="leftMeun">
+<div th:fragment="body_left" class="leftMeun" id="leftMeun">
     <div id="personInfor">
         <p id="userName">admin</p>
         <p>
@@ -24,18 +23,20 @@
         </p>
     </div>
     <div class="meun-title">系统管理</div>
-    <div class="meun-item meun-item-active" id="welcome"  role="tab" data-toggle="tab"><img th:src="@{/thirdparty/system/images/icon_house_grey.png}" />欢迎页</div>
-    <div class="meun-item" id="ideal"  role="tab" data-toggle="tab"><img th:src="@{/thirdparty/system/images/icon_source.png}" />iDeal配置</div>
-    <div shiro:hasPermission="userInfo_query" class="meun-item" id="userInfo"  role="tab" data-toggle="tab"><img th:src="@{/thirdparty/system/images/icon_source.png}" />用户信息查询</div>
+    <div class="meun-item meun-item-active" id="welcome" role="tab" data-toggle="tab"><img
+            th:src="@{/thirdparty/system/images/icon_house_grey.png}"/>欢迎页
+    </div>
+    <div class="meun-item" id="ideal" role="tab" data-toggle="tab"><img
+            th:src="@{/thirdparty/system/images/icon_source.png}"/>iDeal配置
+    </div>
+    <div shiro:hasPermission="userInfo_query" class="meun-item" id="userInfo" role="tab" data-toggle="tab"><img
+            th:src="@{/thirdparty/system/images/icon_source.png}"/>用户信息查询
+    </div>
+    <div class="meun-item" id="roadB" role="tab" data-toggle="tab"><img
+            th:src="@{/thirdparty/system/images/icon_source.png}"/>跳转B分支
+    </div>
 
 </div>
-
-
-
-
-
-
-
 
 
 </body>

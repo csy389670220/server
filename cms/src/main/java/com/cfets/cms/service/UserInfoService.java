@@ -2,7 +2,6 @@ package com.cfets.cms.service;
 
 import com.cfets.cms.model.UserInfo;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -15,14 +14,12 @@ public interface UserInfoService {
      */
     UserInfo queryUserInfoById(String userId);
 
-
     /**
      * //查询绑定用户基础信息
      * @param userInfo
      * @return
      */
     List<UserInfo> queryUserInfo(UserInfo userInfo);
-
 
     /**
      * 查询页面分页信息详细
@@ -33,23 +30,12 @@ public interface UserInfoService {
      */
     PageInfo<UserInfo>  queryListInfo(UserInfo userInfo,int pageNum,int  pageSize);
 
-
     /**
      * 根据ID 更新用户信息
      * @param userInfo
      * @return
      */
     Map<String, Object> updateById(UserInfo userInfo);
-
-
-    /**
-     * 根据ID 更新用户信息
-     * @param userInfo  用户基础信息
-     * @param myfile    用户图片 MultipartFile形式
-     * @return
-     */
-    Map<String, Object> updateById(UserInfo userInfo, MultipartFile myfile);
-
 
     /**
      * 根据用户ID删除信息
@@ -64,15 +50,4 @@ public interface UserInfoService {
      * @param userInfo
      */
     Map<String, Object> addUserInfo(UserInfo userInfo);
-
-
-    /**
-     * 新增userInfo用户
-     * @param userInfo  用户基础信息
-     * @param myfile    用户图片 MultipartFile形式
-     * @return
-     */
-    Map<String, Object> addUserInfo(UserInfo userInfo, MultipartFile myfile);
-
-
 }

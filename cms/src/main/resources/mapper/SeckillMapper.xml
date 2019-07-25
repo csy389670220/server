@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cfets.cms.mapper.SeckillMapper">
+    <resultMap id="BaseResultMap" type="com.cfets.cms.model.Seckill">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="item_id" property="itemId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, item_id, create_time, start_time, end_time, price
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_seckill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_seckill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.cfets.cms.model.Seckill">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_seckill (item_id, create_time, start_time,
+        end_time, price)
+        values (#{itemId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP},
+        #{endTime,jdbcType=TIMESTAMP}, #{price,jdbcType=DECIMAL})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cfets.cms.model.Seckill">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_seckill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                #{itemId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cfets.cms.model.Seckill">
+        update t_seckill
+        <set>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cfets.cms.model.Seckill">
+    update t_seckill
+    set item_id = #{itemId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="queryAll" resultType="com.cfets.cms.model.vo.ItemSeckillVo"
+            parameterType="com.cfets.cms.model.vo.ItemSeckillVo">
+        SELECT
+        l.*, ts.stock
+        FROM
+        (
+            SELECT
+            i.id,
+            i.name,
+            i.price,
+            i.img_url imgUrl,
+            i.item_status itemStatus,
+            s.id seckillId,
+            s.start_time startTime,
+            s.end_time endTime,
+            s.price seckillPrice
+            FROM
+            t_seckill s
+            LEFT JOIN t_item i ON s.item_id = i.id
+            <where>
+                <if test="itemStatus != null">
+                    and i.ITEM_STATUS= #{itemStatus,jdbcType=INTEGER}
+                </if>
+            </where>
+            ORDER  BY s.create_time DESC
+        ) l
+        LEFT JOIN t_item_stock ts ON l.id = ts.item_id
+    </select>
+
+    <select id="queryById" resultType="com.cfets.cms.model.vo.ItemSeckillVo" parameterType="java.lang.Integer">
+        SELECT
+        l.*, ts.stock
+        FROM
+        (
+        SELECT
+        i.id,
+        i.name,
+        i.price,
+        i.img_url imgUrl,
+        i.item_status itemStatus,
+        s.id seckillId,
+        s.start_time startTime,
+        s.end_time endTime,
+        s.price seckillPrice
+        FROM
+        t_seckill s
+        LEFT JOIN t_item i ON s.item_id = i.id
+        WHERE s.id=#{seckillId,jdbcType=INTEGER}
+        ) l
+        LEFT JOIN t_item_stock ts ON l.id = ts.item_id
+    </select>
+</mapper>

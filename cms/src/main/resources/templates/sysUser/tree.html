@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>用户权限管理</title>
+    <div th:replace="/common/common_css :: bootstrapTree_css"></div>
+    <style type="text/css">
+        .treeview .list-group-item.node-checked {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<div style="border: 1px solid #dddddd;width: 285px;margin-left:-24px;margin-top:9px">
+    <div id="treeview-checkable" style="height: 200px;overflow-y :scroll;width:280px;"></div>
+</div>
+
+<!-- JS Scripts-->
+<div th:replace="/common/common_js :: bootstrapTree_js"></div>
+<script th:inline="javascript">
+    $(function () {
+        var defaultData=getRoleList();
+
+        var $checkableTree = $('#treeview-checkable').treeview({
+            data: defaultData,
+            levels: 1,//设置树默认展开级别
+            highlightSelected: false,// 选中项不高亮，避免和上述制定的颜色变化规则冲突
+            onNodeChecked: function (event, node) { //选中节点
+                //1.将自己的子节点全部勾上
+                var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                if (selectNodes) { //子节点不为空，则选中所有子节点
+                    $('#treeview-checkable').treeview('checkNode', [selectNodes, {silent: true}]);
+                }
+                //2.判断自己的父节点是否需要勾上
+                setParentNodeCheck(node);
+            },
+            onNodeUnchecked: function (event, node) { //取消选中节点
+                //1.取消节点，将自己的子节点全部取消
+                var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                if (selectNodes) { //子节点不为空，则取消选中所有子节点
+                    $('#treeview-checkable').treeview('uncheckNode', [selectNodes, {silent: true}]);
+                }
+                //2.判断自己的父节点是否需要取消
+                setParentNodeUnCheck(node);
+
+            },
+            showIcon: true,
+            multiSelect: false,
+            showCheckbox: true,
+
+        });
+
+
+    });
+
+
+    function getRoleList() {
+        var ts = [];
+        var records =[[${result.data}]];
+        var check={checked:true};
+        if(records) {
+            $.each(records, function (index, value) {
+                console.log("index>>>>>>>>>>>>>>>>"+index)
+                var proNode = {};
+                // text是显示的内容
+                proNode["text"] = value.roleName;
+                proNode["id"] = value.id;
+                proNode["selectable"] = true;
+                if(value.check==1){
+                    proNode["state"] = check;   //判断回显，是否需要被选中
+                }
+
+
+                ts.push(proNode);
+            });
+
+        }
+        return ts;
+    }
+
+</script>
+
+</body>
+</html>

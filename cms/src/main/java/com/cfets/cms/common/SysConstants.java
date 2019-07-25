@@ -2,7 +2,7 @@ package com.cfets.cms.common;
 
 /**
  * @author chengsiyu
- * 描述：异常定义字典
+ * 描述：定义字典
  */
 public enum SysConstants {
 

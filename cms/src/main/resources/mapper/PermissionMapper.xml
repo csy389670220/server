@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cfets.cms.mapper.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.cfets.cms.model.vo.PermissionVo" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+    <result column="PER_CODE" property="perCode" jdbcType="VARCHAR" />
+    <result column="PER_DESC" property="perDesc" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PER_LEV" property="perLev" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PARENT_ID, PER_CODE, PER_DESC, CREATE_TIME,PER_LEV
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_permission
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cfets.cms.model.Permission" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_permission (PARENT_ID, PER_CODE, PER_DESC,
+      CREATE_TIME)
+    values (#{parentId,jdbcType=INTEGER}, #{perCode,jdbcType=VARCHAR}, #{perDesc,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cfets.cms.model.Permission" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="perCode != null" >
+        PER_CODE,
+      </if>
+      <if test="perDesc != null" >
+        PER_DESC,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="perCode != null" >
+        #{perCode,jdbcType=VARCHAR},
+      </if>
+      <if test="perDesc != null" >
+        #{perDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cfets.cms.model.Permission" >
+    update t_permission
+    <set >
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="perCode != null" >
+        PER_CODE = #{perCode,jdbcType=VARCHAR},
+      </if>
+      <if test="perDesc != null" >
+        PER_DESC = #{perDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cfets.cms.model.Permission" >
+    update t_permission
+    set PARENT_ID = #{parentId,jdbcType=INTEGER},
+      PER_CODE = #{perCode,jdbcType=VARCHAR},
+      PER_DESC = #{perDesc,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAllPer" resultMap="BaseResultMap" parameterType="com.cfets.cms.model.vo.PermissionVo" >
+    select
+    <include refid="Base_Column_List" />
+    from t_permission
+    <where>
+      <if test="parentId != null">
+        and PARENT_ID =  #{parentId,jdbcType=INTEGER}
+      </if>
+      <if test="perLev != null">
+        and PER_LEV =  #{perLev,jdbcType=INTEGER}
+      </if>
+      <if test="perCode != null">
+        and PER_CODE like CONCAT('%',CONCAT(#{perCode},'%'))
+      </if>
+      <if test="perDesc != null">
+        and PER_DESC like CONCAT('%',CONCAT(#{perDesc},'%'))
+      </if>
+    </where>
+    order by CREATE_TIME 
+  </select>
+</mapper>

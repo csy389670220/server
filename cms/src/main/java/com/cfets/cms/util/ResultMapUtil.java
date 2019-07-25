@@ -1,6 +1,8 @@
 package com.cfets.cms.util;
 
 import com.cfets.cms.common.SysConstants;
+import com.cfets.cms.error.EmBusinessError;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class ResultMapUtil {
     public static Map<String, Object> success(Object msg) {
         Map<String, Object> map = new HashMap<>();
         map.put("code", "success");
-        map.put("msg", msg);
+        map.put("data", msg);
         return map;
     }
 
@@ -35,7 +37,7 @@ public class ResultMapUtil {
     public static Map<String, Object> fail(Object msg) {
         Map<String, Object> map = new HashMap<>();
         map.put("code", "failure");
-        map.put("msg", msg);
+        map.put("data", msg);
         return map;
     }
 
@@ -76,7 +78,7 @@ public class ResultMapUtil {
     public static Map<String, Object> build(String result, Object msg) {
         Map<String, Object> map = new HashMap<>();
         map.put("code", result);
-        map.put("msg", msg);
+        map.put("data", msg);
         return map;
     }
 
@@ -89,7 +91,22 @@ public class ResultMapUtil {
     public static Map<String, Object> build(SysConstants sysConstants) {
         Map<String, Object> map = new HashMap<>();
         map.put("code", sysConstants.getCode());
-        map.put("msg", sysConstants.getMsg());
+        map.put("data", sysConstants.getMsg());
         return map;
     }
+
+    /**
+     * 构建返回结果
+     *
+     * @param emBusinessError 错误信息枚举
+     * @return 结果信息对象
+     */
+    public static Map<String, Object> buildErrorMsg(EmBusinessError emBusinessError) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", emBusinessError.getErrCode());
+        map.put("data", emBusinessError.getErrMsg());
+        return map;
+    }
+
+
 }

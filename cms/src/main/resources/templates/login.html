@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>login</title>
 
-<div th:replace="/common/common_css :: bootstrapvalidator_css"></div>
-<link rel="stylesheet" type="text/css" th:href="@{/thirdparty/system/css/main.css}"/>
-<style>
-  .help-block{
-	  color:red
-  }
+    <div th:replace="/common/common_css :: bootstrapvalidator_css"></div>
+    <link rel="stylesheet" type="text/css" th:href="@{/thirdparty/system/css/main.css}"/>
+    <style>
+        .help-block {
+            color: red
+        }
 
-</style>
+    </style>
 
 </head>
 <body>
@@ -19,28 +19,30 @@
 
 <div class="login">
     <div class="box png">
-		<div class="logo png"></div>
-		<form id="myForm"  action="/CMS/login" method="post">
-		<div class="input">
-			<div class="log">
-				<div class="form-group name">
-					<label>用户名</label><input type="text" class="text form-control" id="userName" placeholder="用户名" name="userName" tabindex="1"/>
-				</div>
-				<div class="form-group pwd">
-					<label>密　码</label><input type="password" class="text" id="passWord" placeholder="密码" name="passWord" tabindex="2"/>
-				</div>
-				<div id="loginInfo"   th:hidden="${loginInfo!='loginError'}">
-					<span style="margin-left:98px;color: red;">*账户/密码错误</span>
-				</div>
-				<input type="submit" class="submit" tabindex="3" value="登录"/>
-				<div class="check"></div>
-				<div class="tip"></div>
-			</div>
-		</div>
-		</form>
-	</div>
+        <div class="logo png"></div>
+        <form id="myForm" action="/CMS/login" method="post">
+            <div class="input">
+                <div class="log">
+                    <div class="form-group name">
+                        <label>用户名</label><input type="text" class="text form-control" id="loginName" placeholder="用户名"
+                                                 name="loginName" tabindex="1" th:value="${loginName}"/>
+                    </div>
+                    <div class="form-group pwd">
+                        <label>密　码</label><input type="password" class="text" id="passWord" placeholder="密码"
+                                                 name="passWord" tabindex="2"/>
+                    </div>
+                    <div id="loginInfo" >
+                        <span th:text="${loginErrInfo}" style="margin-left:98px;color: red;"></span>
+                    </div>
+                    <input type="submit" class="submit" tabindex="3" value="登录"/>
+                    <div class="check"></div>
+                    <div class="tip"></div>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="air-balloon ab-1 png"></div>
-	<div class="air-balloon ab-2 png"></div>
+    <div class="air-balloon ab-2 png"></div>
     <div class="footer"></div>
 </div>
 
@@ -49,40 +51,51 @@
 <div th:replace="/common/common_js :: bootstrapvalidator_js"></div>
 <script type="text/javascript" th:src="@{/thirdparty/system/js/script.js}"></script>
 <script type="text/javascript" th:src="@{/thirdparty/system/js/fun.base.js}"></script>
-<script>
+<script th:inline="javascript">
+    $(function() {
+        /**
+         * shirCode标记，不为空说明是后台shiro session超时跳转过来的
+         * 需要在重新跳转到登录页面，解决导航栏包含登录页BUG
+         */
+        var shirCode = [[${loginShiro}]];
+        if(shirCode){
+            window.location.href="login";
+        }
+    });
+    $("#myForm").bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            //用户名不为空校验
+            loginName: {
+                message: '账户验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '*必填'
+                    }
+                }
+            },
+            //密码不为空校验
+            passWord: {
+                message: '密码验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '*必填'
+                    }
+                }
+            },
+        },
+    });
 
-	$("#myForm").bootstrapValidator({
-		message: 'This value is not valid',
-		feedbackIcons: {
-			valid: 'glyphicon glyphicon-ok',
-			invalid: 'glyphicon glyphicon-remove',
-			validating: 'glyphicon glyphicon-refresh'
-		},
-		fields: {
-			//用户名不为空校验
-			userName: {
-				message: '账户验证失败',
-				validators: {
-					notEmpty: {
-						message: '*必填'
-					}
-				}
-			},
-			//密码不为空校验
-			passWord: {
-				message: '密码验证失败',
-				validators: {
-					notEmpty: {
-						message: '*必填'
-					}
-				}
-			},
-		},
-	});
+
 </script>
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
-<p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
-<p>More Templates <a href="#" target="_blank" title="中汇">中汇信息技术(上海)有限公司</a> </p>
+    <p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
+    <p>More Templates <a href="#" target="_blank" title="中汇">中汇信息技术(上海)有限公司</a></p>
 </div>
 
 

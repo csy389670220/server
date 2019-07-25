@@ -91,4 +91,14 @@
 
     <!-- Place configuration for your caches following -->
 
+    <!-- 登录验证缓存，缓存1分钟 -->
+    <cache name="passwordRetryCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="120"
+    />
 </ehcache>
