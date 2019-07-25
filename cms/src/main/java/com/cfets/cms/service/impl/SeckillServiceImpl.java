@@ -81,9 +81,15 @@ public class SeckillServiceImpl implements SeckillService {
         //tips:缓存key的定义逻辑：前缀+秒杀活动ID
 
         //先在redie获取seckillId对应的MD5，如果不为空直接返回
-        md5= (String) redisRunner.get(SECKILLIDKEY+seckillId);
-        if(!CheckUtil.isEmpty(md5)){
-            return md5;
+        //redis挂掉会导致get操作报错
+        try{
+            md5= (String) redisRunner.get(SECKILLIDKEY+seckillId);
+            if(!CheckUtil.isEmpty(md5)){
+                return md5;
+            }
+        }catch (Exception e){
+            logger.error("exportSeckillUrl set redis error:{}",e.getMessage());
+            md5=null;
         }
 
         Seckill seckill = seckillMapper.selectByPrimaryKey(seckillId);
