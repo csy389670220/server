@@ -56,7 +56,6 @@ public class SeckillController extends BaseController {
     @RequestMapping(value = "/time/now",method = RequestMethod.GET)
     public long time(){
         Date now = new Date();
-        logger.info("nowTime is {}",now.getTime());
         return now.getTime();
     }
 
