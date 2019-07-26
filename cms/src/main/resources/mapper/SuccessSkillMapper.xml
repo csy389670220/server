@@ -18,7 +18,7 @@
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.cfets.cms.model.SuccessSkill">
-        insert into t_success_skill
+        insert ignore into t_success_skill
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="skillId != null">
                 skill_id,

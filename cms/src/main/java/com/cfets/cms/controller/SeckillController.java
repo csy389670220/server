@@ -94,4 +94,17 @@ public class SeckillController extends BaseController {
 
     }
 
+    /**
+     * 执行秒杀 by 存储过程
+     * @return
+     */
+    @RequestMapping(value = "/{md5}/executionProducer",method = RequestMethod.POST)
+    public Map<String, Object> executeProducer(@PathVariable("md5")String md5,
+                                       @RequestParam("itemId") Integer itemId,
+                                       @RequestParam("seckillId") Integer seckillId ,
+                                       @RequestParam("userId") Integer userId ){
+
+       return seckillService.executeSeckillProducer(itemId,seckillId,userId,md5);
+    }
+
 }

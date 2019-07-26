@@ -5,6 +5,7 @@ import com.cfets.cms.model.vo.ItemSeckillVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SeckillMapper {
     int deleteByPrimaryKey(Integer id);
@@ -32,4 +33,10 @@ public interface SeckillMapper {
      * @return
      */
     ItemSeckillVo queryById(@Param("seckillId") Integer seckillId);
+
+    /**
+     * 存储过程：成功秒杀记录落地+减库存
+     * @param param
+     */
+    void killByProducer(Map<String,Object> param);
 }

@@ -1,5 +1,6 @@
 package com.cfets.cms.service;
 
+import com.cfets.cms.error.BusinessException;
 import com.cfets.cms.model.Seckill;
 import com.cfets.cms.model.vo.ItemSeckillVo;
 
@@ -37,7 +38,7 @@ public interface SeckillService {
      * @param md5
      */
     Map<String, Object> executeSeckill(Integer itemId, Integer seckillId, Integer userId, String md5)
-            throws Exception;
+            throws BusinessException,Exception;
 
     /**
      * 执行秒杀操作by 存储过程

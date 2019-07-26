@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 秒杀页面测试类
@@ -68,5 +69,11 @@ public class SeckillTest {
     public void exportSeckillUrl(){
         String md5=seckillService.exportSeckillUrl(1);
         System.out.println(">>>>>>>>>>>>>."+md5);
+    }
+
+    @Test
+    public void executeSeckillProducer(){
+        Map<String, Object> result= seckillService.executeSeckillProducer(1,1,3,"");
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+result.get("code")+result.get("data"));
     }
 }

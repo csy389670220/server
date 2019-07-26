@@ -13,6 +13,7 @@ import com.cfets.cms.service.SeckillService;
 import com.cfets.cms.util.CheckUtil;
 import com.cfets.cms.util.MD5;
 import com.cfets.cms.util.ResultMapUtil;
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,7 +91,6 @@ public class SeckillServiceImpl implements SeckillService {
             }
         }catch (Exception e){
             logger.error("exportSeckillUrl set redis error:{}",e.getMessage());
-            md5=null;
         }
 
         Seckill seckill = seckillMapper.selectByPrimaryKey(seckillId);
@@ -128,23 +129,76 @@ public class SeckillServiceImpl implements SeckillService {
                 throw new BusinessException(EmBusinessError.SECKILL_END_ERROR);
             }
 
-            //减库存
-            int num = itemStockMapper.reduceNumber(itemId);
-            if (num <= 0) {//减库存失败
-                throw new BusinessException(EmBusinessError.SECKILL_STOCK_ERROR);
-            }
             //秒杀记录落地
             SuccessSkill successSkill = new SuccessSkill();
             successSkill.setUserId(userId);
             successSkill.setSkillId(seckillId);
             successSkill.setCreateTime(new Date());
             successSkill.setStatus(1);
-            successSkillMapper.insertSelective(successSkill);
+            int insertNum=successSkillMapper.insertSelective(successSkill);
+            if(insertNum<=0){// 插入失败，重复秒杀
+                throw new BusinessException(EmBusinessError.SECKILL_REPEAT_ERROR);
+            }
+
+            //减库存
+            int num = itemStockMapper.reduceNumber(itemId);
+            if (num <= 0) {//减库存失败
+                throw new BusinessException(EmBusinessError.SECKILL_STOCK_ERROR);
+            }
+
             return ResultMapUtil.successData(EmBusinessError.SECKILL_EXECUTE_OK.getErrMsg());
     }
 
     @Override
     public Map<String, Object> executeSeckillProducer(Integer itemId, Integer seckillId, Integer userId, String md5) {
-        return null;
+        Date now = new Date();
+        Date endTime;//活动结束时间
+        //验证参数合法性
+        if(CheckUtil.isEmpty(itemId) || CheckUtil.isEmpty(seckillId) || CheckUtil.isEmpty(userId)){
+            return ResultMapUtil.buildErrorMsg(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        //验证md5合法性
+        if (md5 == null || !md5.equals(MD5.encodeByMD5(seckillId + "" + SECKILL_SLAT))) {
+            return ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_MD5_ERROR);
+        }
+
+        //验证秒杀活动是否结束
+        endTime= (Date) redisRunner.get(SECKILLENDKEY+seckillId);
+        if(CheckUtil.isEmpty(endTime)){//缓存不存在查询数据库
+            Seckill seckill = seckillMapper.selectByPrimaryKey(seckillId);
+            endTime=seckill.getEndTime();
+        }
+        if(now.getTime()>endTime.getTime()){//活动已经结束
+            return ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_END_ERROR);
+        }
+
+        // 执行整个秒杀流程：成功记录+减库存
+        Map<String,Object> map=new HashMap<>();
+        map.put("skill_id",seckillId);
+        map.put("user_id",userId);
+        map.put("item_id",itemId);
+        map.put("create_time",now);
+        map.put("result",null);
+        try {
+            seckillMapper.killByProducer(map);
+        }catch (Exception e){
+            logger.error("executeSeckillProducer error:"+e,e.getMessage());
+            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_EXECUTE_ERROR);
+        }
+        int result= MapUtils.getIntValue(map,"result",-3);
+        if(1==result){
+            //成功
+            return   ResultMapUtil.successData(EmBusinessError.SECKILL_EXECUTE_OK.getErrMsg());
+        }else if(-1==result){
+            //重复秒杀
+            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_REPEAT_ERROR);
+        } else if(0==result){
+            //库存售罄
+            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_STOCK_ERROR);
+        }else {
+            //存储过程系统失败
+            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_EXECUTE_ERROR);
+        }
     }
 }

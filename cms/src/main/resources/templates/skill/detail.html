@@ -123,32 +123,6 @@
 
     }
 
-    //显示秒杀按钮，实现秒杀逻辑
-    function execution(exposerUrl, node) {
-        var killUrl = cmsSystem.seckill.url.executionUrl(exposerUrl);
-        console.log("killUrl:" + killUrl)
-        //绑定秒杀按钮点击事件（一次性）
-        $("#killBtn").one('click', function () {
-            //执行秒杀请求
-            //1.先禁用按钮
-            $(this).addClass('disabled');
-            //2.发送秒杀请求执行秒杀
-            $.ajax({
-                url: killUrl,
-                type: "post",    //不区分大小写
-                data: {"itemId": itemId, "seckillId": seckillId, "userId": userId},
-                success: function (result) {
-                    //3:显示秒杀结果
-                    node.html('<span class="label label-success">' + result.data + '</span>')
-                    seckillBoxEnd.hide();
-                },
-                error: function (xhr) {
-                    alert("秒杀下单系统错误");
-                }
-            });
-        });
-        node.show();
-    }
 
     //秒杀活动结束倒计时
     function seckillEndCountdown(time) {
@@ -175,6 +149,33 @@
             //获取秒杀地址，控制秒杀逻辑，执行秒杀
             handleSeckill(seckillId, seckillBox);
         });
+    }
+
+    //显示秒杀按钮，实现秒杀逻辑
+    function execution(exposerUrl, node) {
+        var killUrl = cmsSystem.seckill.url.executionProducerUrl(exposerUrl);
+        console.log("killUrl:" + killUrl)
+        //绑定秒杀按钮点击事件（一次性）
+        $("#killBtn").one('click', function () {
+            //执行秒杀请求
+            //1.先禁用按钮
+            $(this).addClass('disabled');
+            //2.发送秒杀请求执行秒杀
+            $.ajax({
+                url: killUrl,
+                type: "post",    //不区分大小写
+                data: {"itemId": itemId, "seckillId": seckillId, "userId": userId},
+                success: function (result) {
+                    //3:显示秒杀结果
+                    node.html('<span class="label label-success">' + result.data + '</span>')
+                    seckillBoxEnd.hide();
+                },
+                error: function (xhr) {
+                    alert("秒杀下单系统错误");
+                }
+            });
+        });
+        node.show();
     }
 
 </script>

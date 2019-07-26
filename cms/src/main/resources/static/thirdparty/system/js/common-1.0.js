@@ -64,6 +64,10 @@ var cmsSystem={
              //执行秒杀url
              executionUrl:function (url) {
                  return "seckill/" + url + "/execution";
+             },
+             //执行秒杀url(存储过程)
+             executionProducerUrl:function (url) {
+                 return "seckill/" + url + "/executionProducer";
              }
          }
 

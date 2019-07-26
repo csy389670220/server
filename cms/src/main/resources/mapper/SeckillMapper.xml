@@ -153,4 +153,15 @@
         ) l
         LEFT JOIN t_item_stock ts ON l.id = ts.item_id
     </select>
+
+    <select id="killByProducer" statementType="CALLABLE">
+        call execute_seckill(
+          #{skill_id,jdbcType=INTEGER,mode=IN},
+          #{user_id,jdbcType=INTEGER,mode=IN},
+          #{item_id,jdbcType=INTEGER,mode=IN},
+          #{create_time,jdbcType=TIMESTAMP,mode=IN},
+          #{result,jdbcType=BIGINT,mode=OUT}
+        )
+    </select>
+
 </mapper>
