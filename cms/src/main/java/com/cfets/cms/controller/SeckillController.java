@@ -31,7 +31,6 @@ public class SeckillController extends BaseController {
     SeckillService seckillService;
 
     @RequestMapping(value = "/query")
-    @RequiresPermissions("skill_query")
     public ModelAndView query() {
         ModelAndView modelAndView = new ModelAndView("skill/skill");
         List<ItemSeckillVo> list = seckillService.getSeckillList();
@@ -40,7 +39,6 @@ public class SeckillController extends BaseController {
     }
 
     @RequestMapping(value = "/{userId}/{seckillId}/detail",method = RequestMethod.GET)
-    @RequiresPermissions("skill_query")
     public ModelAndView detail(@PathVariable("userId") Integer userId,
                                @PathVariable("seckillId") Integer seckillId) {
         ModelAndView modelAndView = new ModelAndView("skill/detail");
@@ -98,7 +96,7 @@ public class SeckillController extends BaseController {
      * 执行秒杀 by 存储过程
      * @return
      */
-    @RequestMapping(value = "/{md5}/executionProducer",method = RequestMethod.POST)
+    @RequestMapping(value = "/{md5}/executionProducer")
     public Map<String, Object> executeProducer(@PathVariable("md5")String md5,
                                        @RequestParam("itemId") Integer itemId,
                                        @RequestParam("seckillId") Integer seckillId ,

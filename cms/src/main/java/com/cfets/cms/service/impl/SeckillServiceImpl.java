@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SeckillServiceImpl implements SeckillService {
@@ -90,7 +87,7 @@ public class SeckillServiceImpl implements SeckillService {
                 return md5;
             }
         }catch (Exception e){
-            logger.error("exportSeckillUrl set redis error:{}",e.getMessage());
+            logger.error("exportSeckillUrl get redis error:{}",e.getMessage());
         }
 
         Seckill seckill = seckillMapper.selectByPrimaryKey(seckillId);
@@ -107,6 +104,11 @@ public class SeckillServiceImpl implements SeckillService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> executeSeckill(Integer itemId, Integer seckillId, Integer userId, String md5) throws BusinessException,Exception {
+            //Integer+随机数参加秒杀
+//            Integer ran= (int) (Math.random()*99999999);
+//            userId=userId+ran;
+//            System.out.println(">>>>>>>>>>>>>>>>>userId:"+userId);
+
             Date now = new Date();
             Date endTime;//活动结束时间
             //验证参数合法性
@@ -151,6 +153,11 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Map<String, Object> executeSeckillProducer(Integer itemId, Integer seckillId, Integer userId, String md5) {
+       //Integer+随机数参加秒杀
+//        Integer ran= (int) (Math.random()*99999999);
+//        userId=userId+ran;
+//        System.out.println(">>>>>>>>>>>>>>>>>userId:"+userId);
+
         Date now = new Date();
         Date endTime;//活动结束时间
         //验证参数合法性
@@ -200,5 +207,12 @@ public class SeckillServiceImpl implements SeckillService {
             //存储过程系统失败
             return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_EXECUTE_ERROR);
         }
+    }
+
+
+    public static void main(String[] args) {
+        //配合压力测试userId+随机数参加秒杀
+        int num= (int) (Math.random()*999999999);
+        System.out.println(">>>>>>>>>>>>>>>>>num:"+num);
     }
 }

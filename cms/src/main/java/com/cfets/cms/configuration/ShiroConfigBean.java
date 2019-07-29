@@ -46,6 +46,8 @@ public class ShiroConfigBean {
         // 设置登录的URL为匿名访问，因为一开始没有用户验证
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/loginShiro", "anon");
+        //不拦截秒杀模块，用于测试秒杀性能
+       // filterChainDefinitionMap.put("/seckill/**", "anon");
         // 退出系统的过滤器
         filterChainDefinitionMap.put("/logout", "logout");
         // 最后一班都，固定格式

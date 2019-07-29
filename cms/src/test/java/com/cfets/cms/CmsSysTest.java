@@ -7,6 +7,8 @@ import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Random;
+
 /**
  * 系统集中测试类
  */
@@ -44,5 +46,15 @@ public class CmsSysTest {
     public void test02() {
         System.out.println(">>>>>>>>>>" +
                 new SimpleHash("md5", "123456", ByteSource.Util.bytes("cms"), 2).toHex());
+    }
+
+
+    @Test
+    public void random() {
+            Random r = new Random(1);
+            for (int i = 0; i < 5; i++) {
+                int ran1 = r.nextInt(10000000);
+                System.out.println(ran1);
+            }
     }
 }
