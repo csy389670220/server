@@ -1,6 +1,6 @@
 #项目部署的端口
 server:
-  port: 8003
+  port: 8004
 
 spring:
   #当前项目的名字
