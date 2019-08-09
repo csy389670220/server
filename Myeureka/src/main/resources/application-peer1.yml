@@ -16,4 +16,4 @@ eureka:
 #此服务器名称
 spring:
   application:
-    name: eurka-server
+    name: eurka-server-61
