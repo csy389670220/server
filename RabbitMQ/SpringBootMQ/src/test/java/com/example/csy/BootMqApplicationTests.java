@@ -22,7 +22,10 @@ public class BootMqApplicationTests {
         String message = "Hello world";
         String receiverA = "queueA";
         String receiverB = "queueB";
-        amqpTemplate.convertAndSend(receiverA, message);
+        for(int i=0;i<1000;i++){
+            amqpTemplate.convertAndSend(receiverA, message);
+        }
+        System.out.println("队列结束");
     }
 
     @Test

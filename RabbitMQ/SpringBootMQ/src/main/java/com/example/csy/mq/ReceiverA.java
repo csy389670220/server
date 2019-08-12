@@ -14,6 +14,11 @@ public class ReceiverA {
  
     @RabbitHandler
     public void receiver(String msg) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("接收者A获取到数据" + msg);
     }
 }
