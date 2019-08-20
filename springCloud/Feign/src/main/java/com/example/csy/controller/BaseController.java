@@ -16,4 +16,9 @@ public class BaseController {
     public String sayHi(String name){
         return feifnService.sayHiFromClientOne(name);
     }
+
+    @RequestMapping(value = "/verification")
+    public String verification(){
+        return feifnService.verification("程思雨","","","");
+    }
 }

@@ -4,6 +4,7 @@ server:
 eureka:
   instance:
     hostname: localhost
+    prefer-ip-address: true
   client:
     #下面两个false说明自己是一个 Eureka Server
     registerWithEureka: false

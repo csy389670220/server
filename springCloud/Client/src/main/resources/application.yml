@@ -11,5 +11,5 @@ eureka:
 #当前项目名字
 spring:
   application:
-    name: service-hi
+    name: service-psid
 

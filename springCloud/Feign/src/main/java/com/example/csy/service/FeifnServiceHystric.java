@@ -8,4 +8,10 @@ public class FeifnServiceHystric  implements  FeifnService {
     public String sayHiFromClientOne(String name) {
         return "sorry "+name;
     }
+
+    @Override
+    public String verification(String cardName, String cardID, String startDate, String endDate) {
+        return null;
+    }
+
 }
