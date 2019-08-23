@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
+    <title>index页面</title>
+    <div th:replace="/common/common_css :: base_css"></div>
+    <!-- JS Scripts-->
+    <div th:replace="/common/common_js :: base_js"></div>
+
+</head>
+<body>
+<!--界面顶部显示区域-->
+<div th:replace="/common/common_body :: body_top"></div>
+
+
+<div id="wrapper">
+    <!--页面左侧菜单栏-->
+    <div th:replace="/common/common_body :: body_left"></div>
+
+    <div id="rightContent">
+        <h1>2222222222222</h1>
+    </div>
+
+</div>
+<script th:inline="javascript">
+
+    $(function() {
+        $(".meun-item").removeClass("meun-item-active");
+        $("#sysUser").addClass("meun-item-active");
+
+    })
+
+
+</script>
+
+</body>
+</html>

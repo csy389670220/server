@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.example.iis.mapper.UserInfoMapper">
+
+  <resultMap type="com.example.iis.model.UserInfo" id="ImageInfo">
+    <id column="ID" property="userId" jdbcType="VARCHAR"/>
+    <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
+    <result column="CARDINFO" property="cardInfo" jdbcType="VARCHAR"/>
+    <result column="IMGBASE" property="imgBase" jdbcType="VARBINARY"/>
+    <result column="STATU" property="statu" jdbcType="VARCHAR"/>
+    <result column="CREATTIME" property="creatTime" jdbcType="VARCHAR"/>
+    <result column="UPDATETIME" property="updateTime" jdbcType="VARCHAR"/>
+
+  </resultMap>
+
+  <select id="queryUserInfoById"  parameterType="string"  resultMap="ImageInfo">
+    select ID,USERNAME,IMGBASE,CARDINFO,STATU,CREATTIME,UPDATETIME from IMGINFO t
+    where
+    t.ID=#{userId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryUserInfo"  parameterType="com.example.iis.model.UserInfo"  resultMap="ImageInfo">
+    select ID,USERNAME,IMGBASE,CARDINFO,STATU,CREATTIME,UPDATETIME from IMGINFO t
+     where  1=1
+    <if test="userName !=null and userName !='' ">
+      and t.USERNAME=#{userName,jdbcType=VARCHAR}
+    </if>
+    order by t.CREATTIME desc
+  </select>
+
+  <select id="getTotal"  parameterType="com.example.iis.model.UserInfo"  resultType="int">
+    select count(*) from IMGINFO t
+    where  1=1
+    <if test="userName !=null and userName !='' ">
+      and t.USERNAME=#{userName,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <update id="updateById" parameterType="com.example.iis.model.UserInfo">
+    update IMGINFO
+    <set>
+      <if test="cardInfo != null and cardInfo !=''">
+        CARDINFO = #{cardInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="statu != null and statu !=''">
+        STATU = #{statu,jdbcType=VARCHAR},
+      </if>
+      UPDATETIME=sysdate
+    </set>
+    where ID = #{userId,jdbcType=VARCHAR}
+  </update>
+
+
+  <delete id="deleteById" parameterType="string">
+    delete from IMGINFO
+    where ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="addUserInfo"  parameterType="com.example.iis.model.UserInfo" >
+    <selectKey keyProperty="userId" resultType="String" order="BEFORE">
+      SELECT SEQ_IMGINFO.NEXTVAL FROM DUAL
+    </selectKey>
+    INSERT INTO imgInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      USERNAME,
+      IMGBASE,
+      STATU,
+      CARDINFO,
+      CREATTIME
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{userId,jdbcType=VARCHAR},
+      #{userName,jdbcType=VARCHAR},
+      #{imgBase,jdbcType=VARBINARY},
+      #{statu,jdbcType=VARBINARY},
+      #{cardInfo,jdbcType=VARCHAR},
+      sysdate
+    </trim>
+
+  </insert>
+
+</mapper>

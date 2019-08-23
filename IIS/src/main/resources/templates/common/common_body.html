@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<!--界面顶部显示区域-->
+<div th:fragment="body_top" id="top" style="background:#FFFFFF">
+    <div id="brand">
+        <img th:src="@{/thirdparty/system/images/logo4.png}" alt="logo"/>
+    </div>
+    <div id="banner" style="background:#bbbfd2;height:10px">
+        <div id="banner_menu">
+            <span>&nbsp;</span>
+        </div>
+    </div>
+</div>
+
+
+<!-- 左侧菜单栏目块 -->
+<div th:fragment="body_left" class="leftMeun" id="leftMeun">
+    <div id="personInfor">
+        <p id="userName" th:text="${userName}"></p>
+        <!--当前登录员工系统ID-->
+        <input type="hidden" id="sysId" th:value="${sysId}"/>
+        <p>
+            <a href="/logout">退出登录</a>
+        </p>
+    </div>
+    <div class="meun-title">主菜单</div>
+    <div id="welcome" class="meun-item meun-item-active"  role="tab" data-toggle="tab">
+        <img th:src="@{/thirdparty/system/images/icon_house_grey.png}"/>首页
+    </div>
+    <div id="sysUser"  shiro:hasPermission="sys_user_query" class="meun-item "  role="tab" data-toggle="tab">
+        <img th:src="@{/thirdparty/system/images/icon_card_grey.png}"/>用户管理
+    </div>
+    <div id="userPer" shiro:hasPermission="role_per_query" class="meun-item "  role="tab" data-toggle="tab"><img
+            th:src="@{/thirdparty/system/images/icon_chara_grey.png}"/>角色管理
+    </div>
+    <div id="seckill" shiro:hasPermission="skill_query" class="meun-item "  role="tab" data-toggle="tab"><img
+            th:src="@{/thirdparty/system/images/icon_char_grey.png}"/>秒杀活动
+    </div>
+    <div  id="blackplans" class="meun-item "  role="tab" data-toggle="tab"><img
+            th:src="@{/thirdparty/system/images/icon_house_grey.png}"/>黑板计划
+    </div>
+</div>
+
+
+</body>
+</html>

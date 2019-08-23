@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="base_js">
+    <script type="text/javascript" th:src="@{/thirdparty/system/js/jquery-1.10.2.js}"></script>
+    <script type="text/javascript" th:src="@{/thirdparty/system/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/thirdparty/system/js/common-1.0.js}"></script>
+</div>
+
+<div th:fragment="bootstrapvalidator_js">
+    <script type="text/javascript" th:src="@{/thirdparty/bootstrapvalidator/js/bootstrapValidator.js}"></script>
+    <script type="text/javascript" th:src="@{/thirdparty/bootstrapvalidator/js/language/zh_CN.js}"></script>
+</div>
+
+<div th:fragment="dataTables_js">
+    <script type="text/javascript" th:src="@{/thirdparty/dataTables/jquery.dataTables.js}"></script>
+    <script type="text/javascript" th:src="@{/thirdparty/dataTables/dataTables.bootstrap.js}"></script>
+</div>
+
+<div th:fragment="bootstrapPaginator_js">
+    <script type="text/javascript" th:src="@{/thirdparty/bootstrapPaginator/bootstrap-paginator.js}"></script>
+</div>
+
+<div th:fragment="bootstrapFileinput_js">
+    <script type="text/javascript" th:src="@{/thirdparty/bootstrapFileinput/fileinput.js}"></script>
+    <script type="text/javascript" th:src="@{/thirdparty/bootstrapFileinput/fileinput_locale_zh.js}"></script>
+</div>
+
+<div th:fragment="bootstrapTree_js">
+    <script type="text/javascript" th:src="@{/thirdparty/bootstrapTree/js/bootstrap-treeview.js}"></script>
+</div>
+
+</body>
+</html>
