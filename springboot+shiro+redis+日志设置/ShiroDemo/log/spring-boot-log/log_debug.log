@@ -1,0 +1,15 @@
+2019-08-23 14:57:20.827 [http-nio-8002-exec-1] DEBUG com.example.demo.shiro.cache.MyRedisCache - 从redis中删除 key [admin]
+2019-08-23 14:57:20.827 [http-nio-8002-exec-1] DEBUG com.example.demo.shiro.cache.MyRedisCache - 根据key从Redis中获取对象 key [admin]
+2019-08-23 14:57:29.704 [http-nio-8002-exec-4] DEBUG com.example.demo.controller.SysController - 本次登录sessionId:4f911697-d16c-4d77-84fc-1e57207f57de,username:admin
+2019-08-23 14:57:29.705 [http-nio-8002-exec-4] DEBUG com.example.demo.shiro.MyShiroRealm - ---------------- 执行 Shiro 凭证认证 ----------------------
+2019-08-23 14:57:29.706 [http-nio-8002-exec-4] DEBUG com.example.demo.shiro.MyShiroRealm - ---------------- Shiro 凭证认证开始 ----------------------
+2019-08-23 14:57:29.824 [http-nio-8002-exec-4] DEBUG com.example.demo.shiro.cache.MyRedisCache - 根据key从Redis中获取对象 key [admin]
+2019-08-23 14:57:29.824 [http-nio-8002-exec-4] DEBUG com.example.demo.shiro.MyShiroRealm - ---------------- 执行 Shiro 权限获取 ---------------------
+2019-08-23 14:57:29.825 [http-nio-8002-exec-4] DEBUG com.example.demo.shiro.MyShiroRealm - 授权loginName:admin
+2019-08-23 14:57:29.826 [http-nio-8002-exec-4] DEBUG com.example.demo.shiro.cache.MyRedisCache - 根据key从存储 key [admin]
+2019-08-23 14:57:29.828 [http-nio-8002-exec-4] DEBUG com.example.demo.shiro.cache.MyRedisCache - 根据key从Redis中获取对象 key [admin]
+2019-08-23 14:57:39.370 [http-nio-8002-exec-5] DEBUG com.example.demo.controller.IndexController - IndexController init session
+2019-08-23 14:57:39.385 [http-nio-8002-exec-5] DEBUG com.example.demo.shiro.cache.MyRedisCache - 根据key从Redis中获取对象 key [admin]
+2019-08-23 14:57:39.387 [http-nio-8002-exec-5] DEBUG com.example.demo.shiro.cache.MyRedisCache - 根据key从Redis中获取对象 key [admin]
+2019-08-23 15:00:13.926 [main] DEBUG com.example.demo.DemoApplicationTests - Running with Spring Boot v1.5.14.RELEASE, Spring v4.3.18.RELEASE
+2019-08-23 15:01:26.608 [main] DEBUG com.example.demo.DemoApplicationTests - Running with Spring Boot v1.5.14.RELEASE, Spring v4.3.18.RELEASE

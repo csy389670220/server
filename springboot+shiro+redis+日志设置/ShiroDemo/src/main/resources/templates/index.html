@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+  <h1>index:进入限制页面</h1>
+  <span th:text="${username}"></span>
+  <button  shiro:hasPermission="del">删除</button>
+  <button  shiro:hasPermission="add">增加</button>
+  <br/>
+  <a href="/index1">index1</a>
+  <a href="/index2">index2</a>
+  <a href="/logout">退出</a>
+
+</body>
+</html>
