@@ -57,7 +57,7 @@ public class UserPermissionController extends BaseController {
              result=userPermissionService.addRole(roleVo);
         } catch (Exception e) {
             logger.error("addRole系统错误");
-            result= ResultMapUtil.buildErrorMsg(EmBusinessError.ROLE_PERMISSION_ADD_ERROR);
+            result= ResultMapUtil.build(EmBusinessError.ROLE_PERMISSION_ADD_ERROR);
     }
         return result;
     }
@@ -70,7 +70,7 @@ public class UserPermissionController extends BaseController {
             result=userPermissionService.delRole(roleVo);
         } catch (Exception e) {
             logger.error("delRole系统错误");
-            result= ResultMapUtil.buildErrorMsg(EmBusinessError.ROLE_PERMISSION_DEL_ERROR);
+            result= ResultMapUtil.build(EmBusinessError.ROLE_PERMISSION_DEL_ERROR);
         }
         return result;
     }
@@ -83,7 +83,7 @@ public class UserPermissionController extends BaseController {
             result=userPermissionService.updateRole(roleVo);
         } catch (Exception e) {
             logger.error("updateRole系统错误");
-            result= ResultMapUtil.buildErrorMsg(EmBusinessError.ROLE_PERMISSION_UPDATE_ERROR);
+            result= ResultMapUtil.build(EmBusinessError.ROLE_PERMISSION_UPDATE_ERROR);
         }
         return result;
     }

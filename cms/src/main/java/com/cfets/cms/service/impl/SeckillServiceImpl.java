@@ -162,12 +162,12 @@ public class SeckillServiceImpl implements SeckillService {
         Date endTime;//活动结束时间
         //验证参数合法性
         if(CheckUtil.isEmpty(itemId) || CheckUtil.isEmpty(seckillId) || CheckUtil.isEmpty(userId)){
-            return ResultMapUtil.buildErrorMsg(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+            return ResultMapUtil.build(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
 
         //验证md5合法性
         if (md5 == null || !md5.equals(MD5.encodeByMD5(seckillId + "" + SECKILL_SLAT))) {
-            return ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_MD5_ERROR);
+            return ResultMapUtil.build(EmBusinessError.SECKILL_MD5_ERROR);
         }
 
         //验证秒杀活动是否结束
@@ -177,7 +177,7 @@ public class SeckillServiceImpl implements SeckillService {
             endTime=seckill.getEndTime();
         }
         if(now.getTime()>endTime.getTime()){//活动已经结束
-            return ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_END_ERROR);
+            return ResultMapUtil.build(EmBusinessError.SECKILL_END_ERROR);
         }
 
         // 执行整个秒杀流程：成功记录+减库存
@@ -191,7 +191,7 @@ public class SeckillServiceImpl implements SeckillService {
             seckillMapper.killByProducer(map);
         }catch (Exception e){
             logger.error("executeSeckillProducer error:"+e,e.getMessage());
-            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_EXECUTE_ERROR);
+            return   ResultMapUtil.build(EmBusinessError.SECKILL_EXECUTE_ERROR);
         }
         int result= MapUtils.getIntValue(map,"result",-3);
         if(1==result){
@@ -199,13 +199,13 @@ public class SeckillServiceImpl implements SeckillService {
             return   ResultMapUtil.successData(EmBusinessError.SECKILL_EXECUTE_OK.getErrMsg());
         }else if(-1==result){
             //重复秒杀
-            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_REPEAT_ERROR);
+            return   ResultMapUtil.build(EmBusinessError.SECKILL_REPEAT_ERROR);
         } else if(0==result){
             //库存售罄
-            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_STOCK_ERROR);
+            return   ResultMapUtil.build(EmBusinessError.SECKILL_STOCK_ERROR);
         }else {
             //存储过程系统失败
-            return   ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_EXECUTE_ERROR);
+            return   ResultMapUtil.build(EmBusinessError.SECKILL_EXECUTE_ERROR);
         }
     }
 

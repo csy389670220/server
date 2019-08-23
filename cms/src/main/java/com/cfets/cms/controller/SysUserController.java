@@ -48,7 +48,7 @@ public class SysUserController extends BaseController {
         try {
             result = sysUserService.addSysUsers(sysUserVo);
         } catch (Exception e) {
-            result= ResultMapUtil.buildErrorMsg(EmBusinessError.SYS_USER_ADD_ERROR);
+            result= ResultMapUtil.build(EmBusinessError.SYS_USER_ADD_ERROR);
         }
         return result;
     }
@@ -71,7 +71,7 @@ public class SysUserController extends BaseController {
         try {
             result = sysUserService.updateUser(sysUserVo);
         } catch (Exception e) {
-            result=ResultMapUtil.buildErrorMsg(EmBusinessError.SYS_USER_UPDATE_ERROR);
+            result=ResultMapUtil.build(EmBusinessError.SYS_USER_UPDATE_ERROR);
         }
         return result;
     }
@@ -84,7 +84,7 @@ public class SysUserController extends BaseController {
         try {
             result = sysUserService.delUser(sysUserVo);
         } catch (Exception e) {
-            result=ResultMapUtil.buildErrorMsg(EmBusinessError.SYS_USER_DEL_ERROR);
+            result=ResultMapUtil.build(EmBusinessError.SYS_USER_DEL_ERROR);
         }
         return result;
     }

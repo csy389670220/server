@@ -81,13 +81,13 @@ public class SeckillController extends BaseController {
 
         }catch (DuplicateKeyException e){
             logger.error("execution DuplicateKeyException is :"+e.getMessage(),e);
-            return ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_REPEAT_ERROR);
+            return ResultMapUtil.build(EmBusinessError.SECKILL_REPEAT_ERROR);
         } catch(BusinessException e){
             logger.error("execution BusinessException is :"+e.getErrMsg(),e);
             return ResultMapUtil.build(String.valueOf(e.getErrCode()),e.getErrMsg());
         } catch (Exception e) {
             logger.error("execution Exception is :"+e.getMessage(),e);
-            return ResultMapUtil.buildErrorMsg(EmBusinessError.SECKILL_EXECUTE_ERROR);
+            return ResultMapUtil.build(EmBusinessError.SECKILL_EXECUTE_ERROR);
         }
 
     }

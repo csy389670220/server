@@ -96,7 +96,7 @@ public class SysUserServiceImpl implements SysUserService {
         //1.判断登录名是否重复
         if (!CheckUtil.isEmpty(sysUserMapper.selectByLoginName(sysUserVo.getLoginName()))) {//账户名重复
             logger.info("addSysUsers账户名重复{}", sysUserVo.getLoginName());
-            return ResultMapUtil.buildErrorMsg(EmBusinessError.SYS_USER_EXIST_ERROR);
+            return ResultMapUtil.build(EmBusinessError.SYS_USER_EXIST_ERROR);
         }
         //2.用户新增
         sysUserVo.setCreateTime(now);
@@ -108,7 +108,7 @@ public class SysUserServiceImpl implements SysUserService {
         ValidationResult validationResult = validator.validate(sysUserVo);
         if (validationResult.isHasErrors()) {
             EmBusinessError.PARAMETER_VALIDATION_ERROR.setErrMsg(validationResult.getErrMsg());
-            return ResultMapUtil.buildErrorMsg( EmBusinessError.PARAMETER_VALIDATION_ERROR);
+            return ResultMapUtil.build( EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
         sysUserVo.setPassword(
                 new SimpleHash(

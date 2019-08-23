@@ -63,7 +63,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
             resultMap = ResultMapUtil.successData(pageInfo);
         }catch (Exception e){
             logger.error("selectRole系统错误"+e);
-            resultMap = ResultMapUtil.buildErrorMsg(EmBusinessError.ROLE_PERMISSION_TREEINIT_ERROR);
+            resultMap = ResultMapUtil.build(EmBusinessError.ROLE_PERMISSION_TREEINIT_ERROR);
         }
         return resultMap;
     }
@@ -100,7 +100,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
             resultMap = ResultMapUtil.successData(listParent);
         }catch (Exception e){
             logger.error("selectAllPer系统错误"+e);
-            resultMap = ResultMapUtil.buildErrorMsg(EmBusinessError.ROLE_PERMISSION_TREEINIT_ERROR);
+            resultMap = ResultMapUtil.build(EmBusinessError.ROLE_PERMISSION_TREEINIT_ERROR);
         }
         return resultMap;
     }
@@ -120,7 +120,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
         ValidationResult validationResult = validator.validate(roleVo);
         if (validationResult.isHasErrors()) {
             EmBusinessError.PARAMETER_VALIDATION_ERROR.setErrMsg(validationResult.getErrMsg());
-            return ResultMapUtil.buildErrorMsg(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+            return ResultMapUtil.build(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
 
         roleMapper.insertSelective(roleVo);

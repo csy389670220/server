@@ -71,13 +71,13 @@ public class ResultMapUtil {
     /**
      * 构建返回结果
      *
-     * @param result 结果编码
+     * @param code 结果编码
      * @param msg    信息
      * @return 结果信息对象
      */
-    public static Map<String, Object> build(String result, Object msg) {
+    public static Map<String, Object> build(String code, Object msg) {
         Map<String, Object> map = new HashMap<>();
-        map.put("code", result);
+        map.put("code", code);
         map.put("data", msg);
         return map;
     }
@@ -101,7 +101,7 @@ public class ResultMapUtil {
      * @param emBusinessError 错误信息枚举
      * @return 结果信息对象
      */
-    public static Map<String, Object> buildErrorMsg(EmBusinessError emBusinessError) {
+    public static Map<String, Object> build(EmBusinessError emBusinessError) {
         Map<String, Object> map = new HashMap<>();
         map.put("code", emBusinessError.getErrCode());
         map.put("data", emBusinessError.getErrMsg());
