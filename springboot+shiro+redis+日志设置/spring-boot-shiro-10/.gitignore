@@ -26,4 +26,6 @@ hs_err_pid*
 
 logs/
 target/
+.idea/
+spring-boot-shiro-10.iml
 
